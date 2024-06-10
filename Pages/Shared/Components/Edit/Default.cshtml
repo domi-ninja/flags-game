@@ -1,0 +1,17 @@
+﻿@using CoreFlags
+@model Edit
+
+@foreach (var flag in Model.Flags)
+{
+    <div class="flag">
+        <img src="@flag.url" alt="@flag.name" />
+        <div class="flag-detail">
+            <p><b>@flag.name</b></p>
+            @foreach (var tag in Model.Tags)
+            {
+                <span class="tag">@tag</span>
+
+            }
+        </div>
+    </div>
+}
