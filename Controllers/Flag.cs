@@ -46,6 +46,7 @@ namespace CoreFlags
                 } );
             }
 
+            result = result.OrderBy( r  => r.name ).ToList();
             return result;
         }
     }
