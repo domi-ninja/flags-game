@@ -22,10 +22,32 @@ body {
 }
 
 .flag {
-    display: flex;
-    margin: 1em 0;
+    display: block;
+    margin: 5px;
+    padding: 0;
 }
 
+.flag .img-wrapper img{
+    max-width: 120px;
+    max-height: 80px;
+    object-fit: contain;
+    object-position: top;
+    border: 1px solid black;
+}
+
+.flag .img-wrapper {
+    height: 80px;
+}
+
+
 .flag-detail {
-    margin-left: 1em;
+    max-width: 120px;
+}
+
+.flags-grid {
+    display: flex;
+    align-content: space-evenly;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
 }

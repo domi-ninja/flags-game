@@ -1,14 +1,13 @@
-﻿using CoreFlags;
-using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace CoreFlags;
+namespace flags_game.Pages.Shared.Components.FlagList;
+
 public class FlagListViewComponent : ViewComponent
 {
 
-    public IViewComponentResult Invoke(Edit model)
+    public IViewComponentResult Invoke(FlagListModel model)
     {
-        return View( model);
+        return this.View( model);
     }
 
 }

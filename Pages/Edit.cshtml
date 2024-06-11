@@ -5,7 +5,17 @@
 }
 <h1>@ViewData["Title"]</h1>
 
+@* @foreach (var tag in Model.tags)
+{
+    <li class="tag">@tag.name</li>
+}
+ *@
 
-<div hx-get="/api/Flag/List" hx-trigger="load">
 
-</div>
+
+<div hx-get="api/flag/tags" hx-trigger="load"> </div>
+
+@* 
+<div hx-post="/api/Flag/Tag" hx-trigger="">
+
+</div> *@

@@ -1,12 +1,17 @@
-﻿@using CoreFlags
-@model Edit
+﻿@model FlagListModel
 
+
+
+<div class="flags-grid" style="display: flex">
 @foreach (var flag in Model.Flags)
 {
     <div class="flag">
-        <img src="@flag.url" alt="@flag.name" />
+        <div class="img-wrapper">
+            <img src="@flag.url" alt="@flag.name" />
+        </div>
         <div class="flag-detail">
             <p><b>@flag.name</b></p>
         </div>
     </div>
-}
+    }
+</div>

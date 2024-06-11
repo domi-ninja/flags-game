@@ -1,8 +1,17 @@
+using flags_game.Models;
+using flags_game.Pages.Shared.Components.FlagList;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
+
+builder.Services.AddDbContext<FlagAppDbContext>(
+    options => options.UseSqlite("Data Source=flags.db")
+    );
 
 var app = builder.Build();
 

@@ -8,11 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Pages\Shared\Components\Edit\EditViewComponent.cs" />
+    <Compile Remove="Pages\Shared\Components\TagList\TagListViewComponent.cs" />
+    <Compile Remove="Pages\Shared\Components\XxYy\XxYyViewComponent.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Pages\Shared\Components\Edit\EditViewComponent.cs">
+    <Content Include="Pages\Shared\Components\FlagTagList\FlagTagListViewComponent.cs">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Pages\Shared\Components\XxYy\XxYyViewComponent.cs">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
@@ -23,7 +28,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="8.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.6" />
   </ItemGroup>
 
 </Project>
