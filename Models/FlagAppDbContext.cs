@@ -44,6 +44,7 @@ namespace flags_game.Models
         public string url { get; set; }
 
         public List<FlagTag> flagTags { get; set; } = new List<FlagTag>();
+        public long population { get; internal set; }
     }
 
     public class Tag

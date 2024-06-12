@@ -1,25 +1,25 @@
 
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 .flag {
@@ -28,7 +28,7 @@ body {
     padding: 0;
 }
 
-.flag .img-wrapper img{
+.flag .img-wrapper img {
     width: 100px;
     height: 60px;
     object-fit: cover;
@@ -36,18 +36,31 @@ body {
     border: 1px solid black;
 }
 
-    .flag .img-wrapper {
-        width: 100px;
-        height: 60px;
-    }
+.flag .img-wrapper {
+    width: 100px;
+    height: 60px;
+}
 
+.flag.mini .img-wrapper {
+    width: 30px;
+    height: 24px;
+}
+
+
+.flag.mini .img-wrapper img {
+    width: 30px;
+    height: 24px;
+    object-fit: cover;
+    object-position: center;
+    border: 1px solid black;
+}
 
 .flag-detail {
     max-width: 100px;
 }
 
-.flag-detail input[type="submit"]{
-    width:100%;
+.flag-detail input[type="submit"] {
+    width: 100%;
 }
 
 .flags-grid {
@@ -58,6 +71,8 @@ body {
     width: 100%;
     min-height: 20px;
 }
+
+
 
 li {
     list-style-type: none;

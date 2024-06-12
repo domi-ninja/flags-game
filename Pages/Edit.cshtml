@@ -46,10 +46,17 @@ asp-controller="Flag" asp-action="Tag"
                             hx-delete="/api/Flag/Tag" hx-target=".tag-@tag.Id" hx-swap="outerHTML">
                         X
                     </button>
-                    <h2>
-                        <a href="/EditTag?tagId=@tag.Id"> Edit </a>
-                    </h2>
+                        <a class="btn btn-primary" style="margin-left: 3em;" href="/EditTag?tagId=@tag.Id"> Edit </a>
                     @* hx-include="#antiforgery"*@
+
+                    <div class="flags-grid">
+                        @foreach (var flagTag in tag.flagTags)
+                        {
+                            <text>
+                                @await Component.InvokeAsync(typeof(FlagMiniViewComponent), flagTag.Flag)
+                            </text>
+                        }
+                    </div>
 
                     <hr />
                 </section>

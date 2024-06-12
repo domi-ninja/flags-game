@@ -33,7 +33,8 @@ namespace flags_game.Pages
             this.Flags = this.dbContext.flags
                 .Include( f => f.flagTags )
                     //.ThenInclude( ft => ft.Tag )
-                .OrderBy(r => r.name)
+                .OrderBy(r => r.population)
+                .Reverse()
                 .ToList();
         }
 

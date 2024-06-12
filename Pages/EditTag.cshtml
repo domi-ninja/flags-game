@@ -18,20 +18,19 @@
 asp-controller="Flag" asp-action="Tag"
 *@
 <section>
-    <h2>Tags</h2>
 
     <div>
         <section>
+            <h2> Editing Tag </h2>
             <input hx-vals='{"Id": @Model.Tag.Id}' name="name" type="text" value="@Model.Tag.name" class="tag"
                    hx-put="/api/Flag/Tag" hx-trigger="keyup changed delay:0.5s" hx-swap="None" />
-            <button hx-vals='{"tagId": @Model.Tag.Id}' class=""
-                    hx-delete="/api/Flag/Tag" hx-target=".tag-@Model.Tag.Id" hx-swap="outerHTML">
-                X
-            </button>
+
+            <a class="btn btn-primary" href="/Edit"> Back</a>
+
             @* hx-include="#antiforgery"*@
 
             <div class="row">
-                <div class="col clicky">
+                <div class="col-2 clicky">
                     @foreach (var flagTag in Model.Tag.flagTags)
                     {
                         @*<div class="flag" hx-vals='{"TagId": @Model.Tag.Id, FlagId: @flag.Id}' hx-post="/api/Flag/FlagTag">*@
@@ -54,7 +53,7 @@ asp-controller="Flag" asp-action="Tag"
                 </div>
 
                 <div class="flags-grid col clicky">
-                    @foreach (var flag in Model.Flags)
+                    @foreach (var flag in Model.Flags.Where( f=> ! Model.Tag.flagTags.Any( (ft) => ft.FlagId == f.Id ) ) )
                     {
                         @*<div class="flag" hx-vals='{"TagId": @Model.Tag.Id, FlagId: @flag.Id}' hx-post="/api/Flag/FlagTag">*@
 
