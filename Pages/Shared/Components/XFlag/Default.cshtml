@@ -1,0 +1,16 @@
+﻿@model flags_game.Models.Flag
+
+
+<div class="flag">
+    <div class="img-wrapper">
+        <img src="@Model.url" alt="@Model.name" />
+    </div>
+    <div class="flag-detail">
+        <p><b>@Model.name</b></p>
+
+        @foreach (var tag in Model.flagTags)
+        {
+            <span>@tag.Tag.name</span>
+        }
+    </div>
+</div>

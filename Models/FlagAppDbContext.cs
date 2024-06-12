@@ -29,9 +29,11 @@ namespace flags_game.Models
 
     public class FlagTag
     {
+        public Tag Tag { get; set; }
         public int Id { get; set; }
         public int FlagId { get; set; }
         public int TagId { get; set; }
+        public Flag Flag { get; set; }
     }
 
 
@@ -40,11 +42,15 @@ namespace flags_game.Models
         public int Id { get; set; }
         public string name { get; set; }
         public string url { get; set; }
+
+        public List<FlagTag> flagTags { get; set; } = new List<FlagTag>();
     }
 
     public class Tag
     {
         public int Id { get; set; }
         public string name { get; set; }
+        public List<FlagTag> flagTags { get; set; } = new List<FlagTag>();
+
     }
 }

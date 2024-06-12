@@ -8,7 +8,7 @@ public class FlagTagListViewComponent : ViewComponent
 
     public IViewComponentResult Invoke(FlagTagListModel model)
     {
-        return View( model);
+        return this.View( model);
     }
 
 }

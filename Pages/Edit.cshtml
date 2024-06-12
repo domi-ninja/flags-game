@@ -7,15 +7,54 @@
 
 @* @foreach (var tag in Model.tags)
 {
-    <li class="tag">@tag.name</li>
+    <li class="tag">@Model.Tag.name</li>
 }
  *@
 
 
 
-<div hx-get="api/flag/tags" hx-trigger="load"> </div>
-
-@* 
+@*
 <div hx-post="/api/Flag/Tag" hx-trigger="">
 
-</div> *@
+</div>
+
+asp-controller="Flag" asp-action="Tag"
+*@
+<section>
+    <h2>Tags</h2>
+
+    <section>
+        <form asp-page-handler="Tag" method="post" enctype="multipart/form-data">
+            <input type="text" name="newTagName" />
+            <input type="submit" value="Add">
+        </form>
+
+    </section>
+
+    <form id="antiforgery">
+        @Html.AntiForgeryToken()
+    </form>
+
+    <ul>
+        @foreach (var tag in Model.Tags)
+        {
+            <li class="tag-@tag.Id" id="tag-@tag.Id">
+                <section>
+                    <input hx-vals='{"Id": @tag.Id}' name="name" type="text" value="@tag.name" class="tag"
+                           hx-put="/api/Flag/Tag" hx-trigger="keyup changed delay:0.5s" hx-swap="None" />
+                    <button hx-vals='{"tagId": @tag.Id}' class=""
+                            hx-delete="/api/Flag/Tag" hx-target=".tag-@tag.Id" hx-swap="outerHTML">
+                        X
+                    </button>
+                    <h2>
+                        <a href="/EditTag?tagId=@tag.Id"> Edit </a>
+                    </h2>
+                    @* hx-include="#antiforgery"*@
+
+                    <hr />
+                </section>
+            </li>
+        }
+    </ul>
+</section>
+

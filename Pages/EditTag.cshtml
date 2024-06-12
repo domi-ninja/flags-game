@@ -1,0 +1,85 @@
+﻿@page
+@model EditTagModel
+
+
+@* @foreach (var tag in Model.tags)
+{
+    <li class="tag">@Model.Tag.name</li>
+}
+ *@
+
+
+
+@*
+<div hx-post="/api/Flag/Tag" hx-trigger="">
+
+</div>
+
+asp-controller="Flag" asp-action="Tag"
+*@
+<section>
+    <h2>Tags</h2>
+
+    <div>
+        <section>
+            <input hx-vals='{"Id": @Model.Tag.Id}' name="name" type="text" value="@Model.Tag.name" class="tag"
+                   hx-put="/api/Flag/Tag" hx-trigger="keyup changed delay:0.5s" hx-swap="None" />
+            <button hx-vals='{"tagId": @Model.Tag.Id}' class=""
+                    hx-delete="/api/Flag/Tag" hx-target=".tag-@Model.Tag.Id" hx-swap="outerHTML">
+                X
+            </button>
+            @* hx-include="#antiforgery"*@
+
+            <div class="row">
+                <div class="col clicky">
+                    @foreach (var flagTag in Model.Tag.flagTags)
+                    {
+                        @*<div class="flag" hx-vals='{"TagId": @Model.Tag.Id, FlagId: @flag.Id}' hx-post="/api/Flag/FlagTag">*@
+
+
+                        <div class="flag">
+                            <div class="img-wrapper">
+                                <img src="@flagTag.Flag.url" alt="@flagTag.Flag.name" />
+                            </div>
+                            <div class="flag-detail">
+                                <form asp-page-handler="RemoveFlagTag" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="Id" value="@flagTag.Id" />
+                                    <input type="hidden" name="TagId" value="@Model.Tag.Id" />
+                                    <input type="submit" value="-">
+                                </form>
+                                <p><b>@flagTag.Flag.name</b></p>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <div class="flags-grid col clicky">
+                    @foreach (var flag in Model.Flags)
+                    {
+                        @*<div class="flag" hx-vals='{"TagId": @Model.Tag.Id, FlagId: @flag.Id}' hx-post="/api/Flag/FlagTag">*@
+
+
+                        @*                                 <div class="flag" hx-vals='{"TagId": @Model.Tag.Id, FlagId: @flag.Id}' hx-post="/api/Flag/FlagTag">
+                    *@
+                        <div class="flag">
+                            <div class="img-wrapper">
+                                <img src="@flag.url" alt="@flag.name" />
+                            </div>
+                            <div class="flag-detail">
+                                <form asp-page-handler="AddFlagTag" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="TagId" value="@Model.Tag.Id" />
+                                    <input type="hidden" name="FlagId" value="@flag.Id" />
+                                    <input type="submit" value="+">
+                                </form>
+                                <p><b>@flag.name</b></p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <hr />
+        </section>
+    </div>
+
+</section>
+
