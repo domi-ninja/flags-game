@@ -2,9 +2,9 @@
 
 <div id="flag-list">
     <ul>
-        <li class="btn btn-secondary" hx-get="/api/Flag/List" hx-vals='{}' hx-target="#flag-list">
-            All
-        </li>
+        <li class="btn btn-secondary" hx-get="/api/Flag/List" hx-vals='{}' hx-target="#flag-list">All</li>
+        <li class="btn btn-secondary" hx-get="/api/Flag/List" hx-vals='{"tagId": -1}' hx-target="#flag-list">Untagged</li>
+
         @foreach (var tag in Model.Tags)
         {
             <li class="btn btn-secondary" hx-get="/api/Flag/List" hx-vals='{"tagId": @tag.Id}' hx-target="#flag-list">@tag.name</li>

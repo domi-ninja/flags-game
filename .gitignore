@@ -5,4 +5,4 @@ bin
 obj
 .vs/flags-game/DesignTimeBuild
 .vs/flags-game/copilot-chat
-flags.db
+flags.db.bak
