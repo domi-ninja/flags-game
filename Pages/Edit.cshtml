@@ -7,9 +7,9 @@
 
 @* @foreach (var tag in Model.tags)
 {
-    <li class="tag">@Model.Tag.name</li>
+<li class="tag">@Model.Tag.name</li>
 }
- *@
+*@
 
 
 
@@ -41,12 +41,12 @@ asp-controller="Flag" asp-action="Tag"
             <li class="tag-@tag.Id" id="tag-@tag.Id">
                 <section>
                     <input hx-vals='{"Id": @tag.Id}' name="name" type="text" value="@tag.name" class="tag"
-                           hx-put="/api/Flag/Tag" hx-trigger="keyup changed delay:0.5s" hx-swap="None" />
-                    <button hx-vals='{"tagId": @tag.Id}' class=""
-                            hx-delete="/api/Flag/Tag" hx-target=".tag-@tag.Id" hx-swap="outerHTML">
+                        hx-put="/api/Flag/Tag" hx-trigger="keyup changed delay:0.5s" hx-swap="None" />
+                    <button hx-vals='{"tagId": @tag.Id}' class="" hx-delete="/api/Flag/Tag" hx-target=".tag-@tag.Id"
+                        hx-swap="outerHTML">
                         X
                     </button>
-                        <a class="btn btn-primary" style="margin-left: 3em;" href="/EditTag?tagId=@tag.Id"> Edit </a>
+                    <a class="btn btn-primary" style="margin-left: 3em;" href="/EditTag?tagId=@tag.Id"> Edit </a>
                     @* hx-include="#antiforgery"*@
 
                     <div class="flags-grid">
@@ -64,4 +64,25 @@ asp-controller="Flag" asp-action="Tag"
         }
     </ul>
 </section>
-
+<section>
+    <div>
+        <h2>Flags</h2> <br>
+        <form asp-page-handler="SyncFlags" method="post" enctype="multipart/form-data">
+            <input type="submit" value="SyncFlags">
+        </form>
+        <br>
+        <pre>
+@Model.Logs
+        </pre>
+    </div>
+    <div class="flags-grid">
+        @foreach (var flag in Model.Flags)
+        {
+            <text>
+                @await Component.InvokeAsync(typeof(XFlagViewComponent), new XFlagModel(){
+                    flag = flag
+                })
+            </text>
+        }
+    </div>
+</section>

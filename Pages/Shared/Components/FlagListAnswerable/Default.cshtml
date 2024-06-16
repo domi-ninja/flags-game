@@ -1,20 +1,23 @@
 ﻿@using flags_game.Pages.Shared.Components.TagsList
-
-@model FlagListModel
+@model FlagListAnswerableModel
 
 <div id="flag-list">
+
     @await Component.InvokeAsync(typeof(TagsListViewComponent), new TagsListModel(){ Tags=Model.Tags })
+
+    <hr />
+
     <section>
         <div class="flags-grid" style="display: flex">
             @foreach (var flag in Model.Flags)
             {
-                flag.flagTags = new List<Models.FlagTag>();
                 <text>
                     @await Component.InvokeAsync(typeof(XFlagViewComponent), new XFlagModel(){
                         flag = flag,
-                        answerable = false
+                        answerable = true
                     })
                 </text>
+
             }
         </div>
     </section>

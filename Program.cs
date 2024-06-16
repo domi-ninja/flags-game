@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using flags_game.Models;
 using flags_game.Pages.Shared.Components.FlagList;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +12,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<FlagAppDbContext>(
     options => options.UseSqlite("Data Source=flags.db")
-    );
-
+);
+    
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
