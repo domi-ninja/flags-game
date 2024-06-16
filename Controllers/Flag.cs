@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.Json;
 using flags_game;
 using flags_game.Models;
 using flags_game.Pages.Shared.Components.FlagList;
@@ -116,7 +117,7 @@ namespace CoreFlags
       return ViewComponent("FlagList", new FlagListModel() { Flags = flags, Tags = tags });
     }
 
-    [HttpGet]
+    [HttpPost]
     public async Task<IActionResult> ListQuestion(TagSearchModel searchModel)
     {
       var (tags, flags) = LoadData(searchModel.tagId);
@@ -126,32 +127,52 @@ namespace CoreFlags
         flag.flagTags = new List<FlagTag>();
       }
 
+      if (!String.IsNullOrEmpty(searchModel.fails))
+      {
+        var fails = JsonSerializer.Deserialize<Dictionary<string, bool>>(searchModel.fails);
+
+        Console.WriteLine("xxxxx");
+        Console.WriteLine(searchModel);
+        Console.WriteLine( string.Join(",", fails.Keys) );
+        Console.WriteLine( string.Join(",", fails.Values) );
+        
+        if (fails.Keys.Count > 0)
+        {
+          flags = flags.Where(f =>
+            fails.ContainsKey(f.Id.ToString()) &&
+            !fails[f.Id.ToString()]
+          ).ToList();
+        }
+      }
+
       flags = flags.Randomize(searchModel.seed).ToList();
-      return ViewComponent(typeof(FlagListAnswerableViewComponent), 
-        new FlagListAnswerableModel() { 
-          Flags = flags, 
+      return ViewComponent(typeof(FlagListAnswerableViewComponent),
+        new FlagListAnswerableModel()
+        {
+          Flags = flags,
           Tags = tags,
           Seed = searchModel.seed
         }
       );
     }
 
-    private int SearchRanking(string dataName, string searchName){
-        int result = 0;  
-        result += dataName.ToLower().StartsWith(searchName.ToLower())? 2 : 0;
-        result += dataName.ToLower().Contains(searchName.ToLower())? 1: 0;
-        return result;
+    private int SearchRanking(string dataName, string searchName)
+    {
+      int result = 0;
+      result += dataName.ToLower().StartsWith(searchName.ToLower()) ? 2 : 0;
+      result += dataName.ToLower().Contains(searchName.ToLower()) ? 1 : 0;
+      return result;
     }
 
     [HttpPost]
     public async Task<IActionResult> SearchCountry(string search)
     {
-      if (search.Length<3) return Content("");
+      if (search.Length < 3) return Content("");
 
       string result = "";
       var flags = this.dbContext.flags.ToList()
-        .Where( f=> SearchRanking( f.name, search ) > 0 )
-        .OrderBy(f=> -SearchRanking( f.name, search ));
+        .Where(f => SearchRanking(f.name, search) > 0)
+        .OrderBy(f => -SearchRanking(f.name, search));
       //.OrderBy( f=> editDistanceWith2Ops(f.name.ToLower(), search.ToLower()) ).Take(5);
       foreach (var flag in flags)
       {
@@ -202,37 +223,37 @@ namespace CoreFlags
       return d[n, m];
     }
 
-    static int editDistanceWith2Ops(String X, 
-                                    String Y) 
-    { 
-        // Find LCS 
-        int m = X.Length, n = Y.Length; 
-        int [ , ]L = new int[m + 1 , n + 1]; 
-        for (int i = 0; i <= m; i++)
-        { 
-            for (int j = 0; j <= n; j++) 
-            { 
-                if (i == 0 || j == 0)
-                { 
-                    L[i , j] = 0; 
-                } 
-                else if (X[i - 1] == Y[j - 1]) 
-                { 
-                    L[i , j] = L[i - 1 , j - 1] + 1; 
-                } 
-                else
-                { 
-                    L[i , j] = Math.Max(L[i - 1 , j], 
-                                        L[i , j - 1]); 
-                } 
-            } 
-        } 
-        int lcs = L[m , n]; 
-    
-        // Edit distance is delete operations + 
-        // insert operations. 
-        return (m - lcs) + (n - lcs); 
-    } 
+    static int editDistanceWith2Ops(String X,
+                                    String Y)
+    {
+      // Find LCS 
+      int m = X.Length, n = Y.Length;
+      int[,] L = new int[m + 1, n + 1];
+      for (int i = 0; i <= m; i++)
+      {
+        for (int j = 0; j <= n; j++)
+        {
+          if (i == 0 || j == 0)
+          {
+            L[i, j] = 0;
+          }
+          else if (X[i - 1] == Y[j - 1])
+          {
+            L[i, j] = L[i - 1, j - 1] + 1;
+          }
+          else
+          {
+            L[i, j] = Math.Max(L[i - 1, j],
+                                L[i, j - 1]);
+          }
+        }
+      }
+      int lcs = L[m, n];
+
+      // Edit distance is delete operations + 
+      // insert operations. 
+      return (m - lcs) + (n - lcs);
+    }
 
   }
 
