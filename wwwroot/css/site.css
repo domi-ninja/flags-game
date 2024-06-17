@@ -82,7 +82,9 @@ body {
     min-height: 20px;
 }
 
-
+.tags li {
+    margin-bottom: 5px;
+}
 
 li {
     list-style-type: none;
