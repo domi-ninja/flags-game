@@ -52,6 +52,7 @@ namespace flags_game.Models
     {
         public int Id { get; set; }
         public string name { get; set; }
+        public string shortName {get; set;}
         public string url { get; set; }
 
         public List<FlagTag> flagTags { get; set; } = new List<FlagTag>();
@@ -62,7 +63,11 @@ namespace flags_game.Models
         {
             return JsonSerializer.Serialize( this );
         }
+    public string constructEmoji(){
+        string country = this.shortName;
 
+        return string.Concat(country.ToUpper().Select(x => char.ConvertFromUtf32(x + 0x1F1A5)));
+    }
     }
 
     public class Tag

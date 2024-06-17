@@ -1,7 +1,842 @@
+using System.Text.Json;
+
 namespace flags_game.Data;
 
 public static class StaticData
 {
+    
+    public static List<Country> LoadCountries(){
+        #region countries
+        string json = @"
+    {
+        ""countries"": 
+        [
+
+    
+            {   ""name"": ""Niue"",
+                ""short"": ""NU""
+            },
+            {   ""name"": ""Western Sahara"",
+                ""short"": ""EH""
+            },
+            {
+                ""name"": ""Taiwan"",
+                ""short"": ""TW""
+            },
+            {
+                ""name"": ""Laos"",
+                ""short"": ""LA""
+            },
+            {
+                ""name"": ""Kosovo"",
+                ""short"": ""XK""
+            },
+            {
+                ""name"": ""Afghanistan"",
+                ""short"": ""AF""
+            },
+            {
+                ""name"": ""Albania"",
+                ""short"": ""AL""
+            },
+            {
+                ""name"": ""Algeria"",
+                ""short"": ""DZ""
+            },
+            {
+                ""name"": ""Andorra"",
+                ""short"": ""AD""
+            },
+            {
+                ""name"": ""Angola"",
+                ""short"": ""AO""
+            },
+            {
+                ""name"": ""Antigua and Barbuda"",
+                ""short"": ""AG""
+            },
+            {
+                ""name"": ""Argentina"",
+                ""short"": ""AR""
+            },
+            {
+                ""name"": ""Armenia"",
+                ""short"": ""AM""
+            },
+            {
+                ""name"": ""Australia "",
+                ""short"": ""AU""
+            },
+            {
+                ""name"": ""Austria"",
+                ""short"": ""AT""
+            },
+            {
+                ""name"": ""Azerbaijan"",
+                ""short"": ""AZ""
+            },
+            {
+                ""name"": ""Bahamas "",
+                ""short"": ""BS""
+            },
+            {
+                ""name"": ""Bahrain"",
+                ""short"": ""BH""
+            },
+            {
+                ""name"": ""Bangladesh"",
+                ""short"": ""BD""
+            },
+            {
+                ""name"": ""Barbados"",
+                ""short"": ""BB""
+            },
+            {
+                ""name"": ""Belarus"",
+                ""short"": ""BY""
+            },
+            {
+                ""name"": ""Belgium"",
+                ""short"": ""BE""
+            },
+            {
+                ""name"": ""Belize"",
+                ""short"": ""BZ""
+            },
+            {
+                ""name"": ""Benin"",
+                ""short"": ""BJ""
+            },
+            {
+                ""name"": ""Bhutan"",
+                ""short"": ""BT""
+            },
+            {
+                ""name"": ""Bolivia"",
+                ""short"": ""BO""
+            },
+            {
+                ""name"": ""Bosnia and Herzegovina"",
+                ""short"": ""BA""
+            },
+            {
+                ""name"": ""Botswana"",
+                ""short"": ""BW""
+            },
+            {
+                ""name"": ""Brazil"",
+                ""short"": ""BR""
+            },
+            {
+                ""name"": ""Brunei"",
+                ""short"": ""BN""
+            },
+            {
+                ""name"": ""Bulgaria"",
+                ""short"": ""BG""
+            },
+            {
+                ""name"": ""Burkina Faso"",
+                ""short"": ""BF""
+            },
+            {
+                ""name"": ""Burundi"",
+                ""short"": ""BI""
+            },
+            {
+                ""name"": ""Cabo Verde"",
+                ""short"": ""CV""
+            },
+            {
+                ""name"": ""Cambodia"",
+                ""short"": ""KH""
+            },
+            {
+                ""name"": ""Cameroon"",
+                ""short"": ""CM""
+            },
+            {
+                ""name"": ""Canada"",
+                ""short"": ""CA""
+            },
+            {
+                ""name"": ""Central African Republic "",
+                ""short"": ""CF""
+            },
+            {
+                ""name"": ""Chad"",
+                ""short"": ""TD""
+            },
+            {
+                ""name"": ""Chile"",
+                ""short"": ""CL""
+            },
+            {
+                ""name"": ""China"",
+                ""short"": ""CN""
+            },
+            {
+                ""name"": ""Colombia"",
+                ""short"": ""CO""
+            },
+            {
+                ""name"": ""Comoros "",
+                ""short"": ""KM""
+            },
+            {
+                ""name"": ""Democratic Republic of the Congo (DRC)"",
+                ""short"": ""CD""
+            },
+            {
+                ""name"": ""Republic of the Congo"",
+                ""short"": ""CG""
+            },
+            {
+                ""name"": ""Costa Rica"",
+                ""short"": ""CR""
+            },
+            {
+                ""name"": ""Côte d'Ivoire "",
+                ""short"": ""CI""
+            },
+            {
+                ""name"": ""Croatia"",
+                ""short"": ""HR""
+            },
+            {
+                ""name"": ""Cuba"",
+                ""short"": ""CU""
+            },
+            {
+                ""name"": ""Cyprus"",
+                ""short"": ""CY""
+            },
+            {
+                ""name"": ""Czechia "",
+                ""short"": ""CZ""
+            },
+            {
+                ""name"": ""Denmark"",
+                ""short"": ""DK""
+            },
+            {
+                ""name"": ""Djibouti"",
+                ""short"": ""DJ""
+            },
+            {
+                ""name"": ""Dominica"",
+                ""short"": ""DM""
+            },
+            {
+                ""name"": ""Dominican Republic "",
+                ""short"": ""DO""
+            },
+            {
+                ""name"": ""Ecuador"",
+                ""short"": ""EC""
+            },
+            {
+                ""name"": ""Egypt"",
+                ""short"": ""EG""
+            },
+            {
+                ""name"": ""El Salvador"",
+                ""short"": ""SV""
+            },
+            {
+                ""name"": ""Equatorial Guinea"",
+                ""short"": ""GQ""
+            },
+            {
+                ""name"": ""Eritrea"",
+                ""short"": ""ER""
+            },
+            {
+                ""name"": ""Estonia"",
+                ""short"": ""EE""
+            },
+            {
+                ""name"": ""Eswatini "",
+                ""short"": ""SZ""
+            },
+            {
+                ""name"": ""Ethiopia"",
+                ""short"": ""ET""
+            },
+            {
+                ""name"": ""Fiji"",
+                ""short"": ""FJ""
+            },
+            {
+                ""name"": ""Finland"",
+                ""short"": ""FI""
+            },
+            {
+                ""name"": ""France "",
+                ""short"": ""FR""
+            },
+            {
+                ""name"": ""Gabon"",
+                ""short"": ""GA""
+            },
+            {
+                ""name"": ""Gambia, The"",
+                ""short"": ""GM""
+            },
+            {
+                ""name"": ""Georgia"",
+                ""short"": ""GE""
+            },
+            {
+                ""name"": ""Germany"",
+                ""short"": ""DE""
+            },
+            {
+                ""name"": ""Ghana"",
+                ""short"": ""GH""
+            },
+            {
+                ""name"": ""Greece"",
+                ""short"": ""GR""
+            },
+            {
+                ""name"": ""Grenada"",
+                ""short"": ""GD""
+            },
+            {
+                ""name"": ""Guatemala"",
+                ""short"": ""GT""
+            },
+            {
+                ""name"": ""Guinea"",
+                ""short"": ""GN""
+            },
+            {
+                ""name"": ""Guinea-Bissau"",
+                ""short"": ""GW""
+            },
+            {
+                ""name"": ""Guyana"",
+                ""short"": ""GY""
+            },
+            {
+                ""name"": ""Haiti"",
+                ""short"": ""HT""
+            },
+            {
+                ""name"": ""Vatican"",
+                ""short"": ""VA""
+            },
+            {
+                ""name"": ""Honduras"",
+                ""short"": ""HN""
+            },
+            {
+                ""name"": ""Hungary"",
+                ""short"": ""HU""
+            },
+            {
+                ""name"": ""Iceland"",
+                ""short"": ""IS""
+            },
+            {
+                ""name"": ""India"",
+                ""short"": ""IN""
+            },
+            {
+                ""name"": ""Indonesia"",
+                ""short"": ""ID""
+            },
+            {
+                ""name"": ""Iran"",
+                ""short"": ""IR""
+            },
+            {
+                ""name"": ""Iraq"",
+                ""short"": ""IQ""
+            },
+            {
+                ""name"": ""Ireland"",
+                ""short"": ""IE""
+            },
+            {
+                ""name"": ""Israel"",
+                ""short"": ""IL""
+            },
+            {
+                ""name"": ""Italy"",
+                ""short"": ""IT""
+            },
+            {
+                ""name"": ""Jamaica"",
+                ""short"": ""JM""
+            },
+            {
+                ""name"": ""Japan"",
+                ""short"": ""JP""
+            },
+            {
+                ""name"": ""Jordan"",
+                ""short"": ""JO""
+            },
+            {
+                ""name"": ""Kazakhstan"",
+                ""short"": ""KZ""
+            },
+            {
+                ""name"": ""Kenya"",
+                ""short"": ""KE""
+            },
+            {
+                ""name"": ""Kiribati"",
+                ""short"": ""KI""
+            },
+            {
+                ""name"": ""North Korea"",
+                ""short"": ""KP""
+            },
+            {
+                ""name"": ""South Korea"",
+                ""short"": ""KR""
+            },
+            {
+                ""name"": ""Kuwait"",
+                ""short"": ""KW""
+            },
+            {
+                ""name"": ""Kyrgyzstan"",
+                ""short"": ""KG""
+            },
+            {
+                ""name"": ""Latvia"",
+                ""short"": ""LV""
+            },
+            {
+                ""name"": ""Lebanon"",
+                ""short"": ""LB""
+            },
+            {
+                ""name"": ""Lesotho"",
+                ""short"": ""LS""
+            },
+            {
+                ""name"": ""Liberia"",
+                ""short"": ""LR""
+            },
+            {
+                ""name"": ""Libya"",
+                ""short"": ""LY""
+            },
+            {
+                ""name"": ""Liechtenstein"",
+                ""short"": ""LI""
+            },
+            {
+                ""name"": ""Lithuania"",
+                ""short"": ""LT""
+            },
+            {
+                ""name"": ""Luxembourg"",
+                ""short"": ""LU""
+            },
+            {
+                ""name"": ""Madagascar"",
+                ""short"": ""MG""
+            },
+            {
+                ""name"": ""Malawi"",
+                ""short"": ""MW""
+            },
+            {
+                ""name"": ""Malaysia"",
+                ""short"": ""MY""
+            },
+            {
+                ""name"": ""Maldives"",
+                ""short"": ""MV""
+            },
+            {
+                ""name"": ""Mali"",
+                ""short"": ""ML""
+            },
+            {
+                ""name"": ""Malta"",
+                ""short"": ""MT""
+            },
+            {
+                ""name"": ""Marshall Islands "",
+                ""short"": ""MH""
+            },
+            {
+                ""name"": ""Mauritania"",
+                ""short"": ""MR""
+            },
+            {
+                ""name"": ""Mauritius"",
+                ""short"": ""MU""
+            },
+            {
+                ""name"": ""Mexico"",
+                ""short"": ""MX""
+            },
+            {
+                ""name"": ""Micronesia"",
+                ""short"": ""FM""
+            },
+            {
+                ""name"": ""Moldova"",
+                ""short"": ""MD""
+            },
+            {
+                ""name"": ""Monaco"",
+                ""short"": ""MC""
+            },
+            {
+                ""name"": ""Mongolia"",
+                ""short"": ""MN""
+            },
+            {
+                ""name"": ""Montenegro"",
+                ""short"": ""ME""
+            },
+            {
+                ""name"": ""Morocco"",
+                ""short"": ""MA""
+            },
+            {
+                ""name"": ""Mozambique"",
+                ""short"": ""MZ""
+            },
+            {
+                ""name"": ""Myanmar "",
+                ""short"": ""MM""
+            },
+            {
+                ""name"": ""Namibia"",
+                ""short"": ""NA""
+            },
+            {
+                ""name"": ""Nauru"",
+                ""short"": ""NR""
+            },
+            {
+                ""name"": ""Nepal"",
+                ""short"": ""NP""
+            },
+            {
+                ""name"": ""Netherlands"",
+                ""short"": ""NL""
+            },
+            {
+                ""name"": ""New Zealand"",
+                ""short"": ""NZ""
+            },
+            {
+                ""name"": ""Nicaragua"",
+                ""short"": ""NI""
+            },
+            {
+                ""name"": ""Niger "",
+                ""short"": ""NE""
+            },
+            {
+                ""name"": ""Nigeria"",
+                ""short"": ""NG""
+            },
+            {
+                ""name"": ""North Macedonia "",
+                ""short"": ""MK""
+            },
+            {
+                ""name"": ""Norway"",
+                ""short"": ""NO""
+            },
+            {
+                ""name"": ""Oman"",
+                ""short"": ""OM""
+            },
+            {
+                ""name"": ""Pakistan"",
+                ""short"": ""PK""
+            },
+            {
+                ""name"": ""Palau"",
+                ""short"": ""PW""
+            },
+            {
+                ""name"": ""Palestine"",
+                ""short"": ""PS""
+            },
+            {
+                ""name"": ""Panama"",
+                ""short"": ""PA""
+            },
+            {
+                ""name"": ""Papua New Guinea"",
+                ""short"": ""PG""
+            },
+            {
+                ""name"": ""Paraguay"",
+                ""short"": ""PY""
+            },
+            {
+                ""name"": ""Peru"",
+                ""short"": ""PE""
+            },
+            {
+                ""name"": ""Philippines "",
+                ""short"": ""PH""
+            },
+            {
+                ""name"": ""Poland"",
+                ""short"": ""PL""
+            },
+            {
+                ""name"": ""Portugal"",
+                ""short"": ""PT""
+            },
+            {
+                ""name"": ""Qatar"",
+                ""short"": ""QA""
+            },
+            {
+                ""name"": ""Romania"",
+                ""short"": ""RO""
+            },
+            {
+                ""name"": ""Russia"",
+                ""short"": ""RU""
+            },
+            {
+                ""name"": ""Rwanda"",
+                ""short"": ""RW""
+            },
+            {
+                ""name"": ""Saint Kitts and Nevis"",
+                ""short"": ""KN""
+            },
+            {
+                ""name"": ""Saint Lucia"",
+                ""short"": ""LC""
+            },
+            {
+                ""name"": ""Saint Vincent and the Grenadines"",
+                ""short"": ""VC""
+            },
+            {
+                ""name"": ""Samoa"",
+                ""short"": ""WS""
+            },
+            {
+                ""name"": ""San Marino"",
+                ""short"": ""SM""
+            },
+            {
+                ""name"": ""São Tomé and Príncipe"",
+                ""short"": ""ST""
+            },
+            {
+                ""name"": ""Saudi Arabia"",
+                ""short"": ""SA""
+            },
+            {
+                ""name"": ""Senegal"",
+                ""short"": ""SN""
+            },
+            {
+                ""name"": ""Serbia"",
+                ""short"": ""RS""
+            },
+            {
+                ""name"": ""Seychelles"",
+                ""short"": ""SC""
+            },
+            {
+                ""name"": ""Sierra Leone"",
+                ""short"": ""SL""
+            },
+            {
+                ""name"": ""Singapore"",
+                ""short"": ""SG""
+            },
+            {
+                ""name"": ""Slovakia"",
+                ""short"": ""SK""
+            },
+            {
+                ""name"": ""Slovenia"",
+                ""short"": ""SI""
+            },
+            {
+                ""name"": ""Solomon Islands"",
+                ""short"": ""SB""
+            },
+            {
+                ""name"": ""Somalia"",
+                ""short"": ""SO""
+            },
+            {
+                ""name"": ""South Africa"",
+                ""short"": ""ZA""
+            },
+            {
+                ""name"": ""South Sudan"",
+                ""short"": ""SS""
+            },
+            {
+                ""name"": ""Spain"",
+                ""short"": ""ES""
+            },
+            {
+                ""name"": ""Sri Lanka"",
+                ""short"": ""LK""
+            },
+            {
+                ""name"": ""Sudan "",
+                ""short"": ""SD""
+            },
+            {
+                ""name"": ""Suriname"",
+                ""short"": ""SR""
+            },
+            {
+                ""name"": ""Sweden"",
+                ""short"": ""SE""
+            },
+            {
+                ""name"": ""Switzerland"",
+                ""short"": ""CH""
+            },
+            {
+                ""name"": ""Syria "",
+                ""short"": ""SY""
+            },
+            {
+                ""name"": ""Tajikistan"",
+                ""short"": ""TJ""
+            },
+            {
+                ""name"": ""Tanzania"",
+                ""short"": ""TZ""
+            },
+            {
+                ""name"": ""Thailand"",
+                ""short"": ""TH""
+            },
+            {
+                ""name"": ""Timor-Leste"",
+                ""short"": ""TL""
+            },
+            {
+                ""name"": ""Togo"",
+                ""short"": ""TG""
+            },
+            {
+                ""name"": ""Tonga"",
+                ""short"": ""TO""
+            },
+            {
+                ""name"": ""Trinidad and Tobago"",
+                ""short"": ""TT""
+            },
+            {
+                ""name"": ""Tunisia"",
+                ""short"": ""TN""
+            },
+            {
+                ""name"": ""Turkey "",
+                ""short"": ""TR""
+            },
+            {
+                ""name"": ""Turkmenistan"",
+                ""short"": ""TM""
+            },
+            {
+                ""name"": ""Tuvalu"",
+                ""short"": ""TV""
+            },
+            {
+                ""name"": ""Uganda"",
+                ""short"": ""UG""
+            },
+            {
+                ""name"": ""Ukraine"",
+                ""short"": ""UA""
+            },
+            {
+                ""name"": ""United Arab Emirates (UAE)"",
+                ""short"": ""AE""
+            },
+            {
+                ""name"": ""United Kingdom"",
+                ""short"": ""GB""
+            },
+            {
+                ""name"": ""USA"",
+                ""short"": ""US""
+            },
+            {
+                ""name"": ""Uruguay"",
+                ""short"": ""UY""
+            },
+            {
+                ""name"": ""Uzbekistan"",
+                ""short"": ""UZ""
+            },
+            {
+                ""name"": ""Vanuatu"",
+                ""short"": ""VU""
+            },
+            {
+                ""name"": ""Venezuela"",
+                ""short"": ""VE""
+            },
+            {
+                ""name"": ""Vietnam"",
+                ""short"": ""VN""
+            },
+            {
+                ""name"": ""Yemen"",
+                ""short"": ""YE""
+            },
+            {
+                ""name"": ""Zambia"",
+                ""short"": ""ZM""
+            },
+            {
+                ""name"": ""Zimbabwe"",
+                ""short"": ""ZW""
+            }
+        ]
+    }
+        ";
+
+        #endregion
+
+        var dataContainer = JsonSerializer.Deserialize<CountriesContainer>( json );
+
+        foreach (var c in dataContainer.countries ) { 
+            c.name = c.name.Trim();
+            var match = pop.Where(  p=>p.country.ToLower() == c.name.ToLower() ).FirstOrDefault();
+            if ( match==null ) {
+                //throw new Exception(  "no pop data " + c.name.ToLower() );
+            } else {
+                c.population = match.population;
+            }
+        }
+        return dataContainer.countries;
+    }
+
+    public class  CountriesContainer { 
+        public List<Country> countries {get; set; }
+    }
+
+    public class Country {
+        public string name {get; set; }
+        public string @short {get; set; }
+        public long population { get; set; }
+    }
+
     public static List<PopData> pop = new List<PopData>()
     {
         new PopData()
@@ -81,7 +916,7 @@ public static class StaticData
         },
         new PopData()
         {
-            country = "Democratic Republic of the Congo",
+            country = "Democratic Republic of the Congo (DRC)",
             population = 95370000
         },
         new PopData()
@@ -871,7 +1706,7 @@ public static class StaticData
         },
         new PopData()
         {
-            country = "Cape Verde",
+            country = "Cabo Verde",
             population = 491233
         },
         new PopData()
