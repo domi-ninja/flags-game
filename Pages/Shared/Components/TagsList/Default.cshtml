@@ -6,36 +6,36 @@
 
 <b>Trials</b>
 <ul>
-    <li class="btn btn-primary" hx-post="/api/Flag/ListQuestion" hx-vals='{}' hx-target="#flag-list">All</li>
-    <li class="btn btn-primary" hx-post="/api/Flag/ListQuestion" hx-vals='{"tagId": -1}' hx-target="#flag-list">Untagged</li>
+    <li class="btn btn-primary" hx-post="/api/Flag/ListQuestion" hx-vals='js:{seed:@(random.NextInt64()%100) }' hx-target="#flag-list">All</li>
+    <li class="btn btn-primary" hx-post="/api/Flag/ListQuestion" hx-vals='js:{seed:@(random.NextInt64()%100), "tagId": -1}' hx-target="#flag-list">Untagged</li>
 
     @foreach (var tag in Model.Tags)
     {
-        <li class="btn btn-primary" hx-post="/api/Flag/ListQuestion" hx-vals='{"seed":@(random.NextInt64()%100), "tagId": @tag.Id}' hx-target="#flag-list">@tag.name</li>
+        <li class="btn btn-primary" hx-post="/api/Flag/ListQuestion" hx-vals='js:{seed:@(random.NextInt64()%100), "tagId": @tag.Id}' hx-target="#flag-list">@tag.name</li>
     }
 </ul>
 <hr />
 
     <b>Previously wrong</b>
 <ul>
-    <li class="btn btn-warning" hx-post="/api/Flag/ListQuestion" hx-vals='js:{fails: get_fails()}' hx-target="#flag-list">All</li>
-    <li class="btn btn-warning" hx-post="/api/Flag/ListQuestion" hx-vals='js:{fails: get_fails(), tagId: -1}' hx-target="#flag-list">Untagged</li>
+    <li class="btn btn-warning" hx-post="/api/Flag/ListQuestion" hx-vals='js:{seed:@(random.NextInt64()%100), fails: get_fails()}' hx-target="#flag-list">All</li>
+    <li class="btn btn-warning" hx-post="/api/Flag/ListQuestion" hx-vals='js:{seed:@(random.NextInt64()%100), fails: get_fails(), tagId: -1}' hx-target="#flag-list">Untagged</li>
 
     @foreach (var tag in Model.Tags)
     {
-        <li class="btn btn-warning" hx-post="/api/Flag/ListQuestion" hx-vals='js:{fails: get_fails(), tagId: @tag.Id}' hx-target="#flag-list">@tag.name</li>
+        <li class="btn btn-warning" hx-post="/api/Flag/ListQuestion" hx-vals='js:{seed:@(random.NextInt64()%100), fails: get_fails(), tagId: @tag.Id}' hx-target="#flag-list">@tag.name</li>
     }
 </ul>
 <hr />
 
 <b>Solutions</b>
 <ul>
-    <li class="btn btn-secondary" hx-get="/api/Flag/List" hx-vals='{"seed":@(random.NextInt64()%100)}' hx-target="#flag-list">All</li>
-    <li class="btn btn-secondary" hx-get="/api/Flag/List" hx-vals='{"seed":@(random.NextInt64()%100), "tagId": -1}' hx-target="#flag-list">Untagged</li>
+    <li class="btn btn-secondary" hx-get="/api/Flag/List" hx-vals='js:{}' hx-target="#flag-list">All</li>
+    <li class="btn btn-secondary" hx-get="/api/Flag/List" hx-vals='js:{tagId: -1}' hx-target="#flag-list">Untagged</li>
 
     @foreach (var tag in Model.Tags)
     {
-        <li class="btn btn-secondary" hx-get="/api/Flag/List" hx-vals='{"tagId": @tag.Id}' hx-target="#flag-list">@tag.name</li>
+        <li class="btn btn-secondary" hx-get="/api/Flag/List" hx-vals='js:{tagId: @tag.Id}' hx-target="#flag-list">@tag.name</li>
     }
 </ul>
 <hr />
