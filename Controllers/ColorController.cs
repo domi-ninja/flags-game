@@ -279,7 +279,6 @@ namespace CoreFlags
             }
         }
 
-
         public IActionResult RelevantCombos()
         {
             var (flagColors, flags) = LoadData();
@@ -310,8 +309,11 @@ namespace CoreFlags
                 {
                     colors = colors,
                     flagsCount = matchingFlags.Count,
+                    flags = matchingFlags.ToArray(),
                 });
             }
+
+            relevantComboList = relevantComboList.OrderByDescending( rc => rc.flagsCount ).ToList();
 
             return ViewComponent(typeof(ColorTagListViewComponent), new ColorTagListModel()
             {

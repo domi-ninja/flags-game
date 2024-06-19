@@ -8,6 +8,7 @@ using flags_game.Models;
 using flags_game.Pages.Shared.Components.FlagColormapComponent;
 using flags_game.Pages.Shared.Components.FlagList;
 using flags_game.Pages.Shared.Components.FlagListAnswerable;
+using flags_game.Pages.Shared.Components.TagsList;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -113,6 +114,16 @@ namespace CoreFlags
             return Content(""); //ViewComponent(typeof(FlagTagListViewComponent), new FlagTagListModel() { Tags = tags });
         }
 
+        [HttpGet]
+        public IActionResult TagButtons( TagSearchModel searchModel )
+        {
+            var tags = this.dbContext.tags.ToList();
+            return ViewComponent(typeof(TagsListViewComponent), new TagsListModel()
+            {
+                Tags = tags,
+                Seed = searchModel.seed,
+            });
+        }
 
         [HttpGet]
         public async Task<IActionResult> List(TagSearchModel searchModel)
@@ -171,6 +182,12 @@ namespace CoreFlags
         }
 
 
+        [HttpPost]
+        public IActionResult ListFlags( List<int> flagIds )
+        {
+            var 
+            return Content("Lol");
+        }
 
         [HttpPost]
         public async Task<IActionResult> SearchCountry(string search)
