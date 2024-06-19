@@ -13,18 +13,21 @@
 @*         hx-trigger="load, click"
  *@        
         <li><h2>flags-game</h2</li>
-        <li class="btn btn-success" hx-vals="js:{ TagColorCss: 'btn-success', TagParamsStr: 'mode: 0, random: true' }" hx-get="/api/Flag/TagButtons" hx-target="#tag-buttons">
+        <li class="btn btn-hard btn-light" hx-vals="js:{ TagColorCss: 'btn-hard', TagParamsStr: 'mode: 2, random: true, minPop: false'}" hx-get="/api/Flag/TagButtons" hx-target="#tag-buttons">
+            Hard
+        </li>
+        <li class="btn btn-medium btn-light" hx-vals="js:{ TagColorCss: 'btn-medium', TagParamsStr: 'mode: 1, random: true' }" hx-get="/api/Flag/TagButtons" hx-target="#tag-buttons">
             Normal
         </li>
-        <li class="btn btn-success btn-warning" hx-vals="js:{ TagColorCss: 'btn-success btn-warning', TagParamsStr: 'mode: 1' }" hx-get="/api/Flag/TagButtons" hx-target="#tag-buttons">
+        <li class="btn btn-easy btn-light" hx-vals="js:{ TagColorCss: 'btn-easy', TagParamsStr: 'mode: 0' }" hx-get="/api/Flag/TagButtons" hx-target="#tag-buttons">
             Easy
         </li>
 
-        <li class="btn btn-warning" hx-vals="js:{ TagColorCss: 'btn-warning', TagParamsStr: 'mode: 2, random: true, fails: ' + get_fails() }" hx-get="/api/Flag/TagButtons" hx-target="#tag-buttons">
+        <li class="btn btn-warning" hx-vals="js:{ TagColorCss: 'btn-warning', TagParamsStr: 'mode: 5, random: true, fails: ' + get_fails() }" hx-get="/api/Flag/TagButtons" hx-target="#tag-buttons">
             Previously wrong
         </li>
 
-        <li class="btn btn-secondary" hx-vals="js:{ TagColorCss: 'btn-secondary', TagParamsStr: 'answers: true, mode:3' }" hx-get="/api/Flag/TagButtons" hx-target="#tag-buttons">
+        <li class="btn btn-secondary" hx-vals="js:{ TagColorCss: 'btn-secondary', TagParamsStr: 'answers: true, mode:10' }" hx-get="/api/Flag/TagButtons" hx-target="#tag-buttons">
             Solutions
         </li>
     </ul>

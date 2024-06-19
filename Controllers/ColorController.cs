@@ -37,7 +37,7 @@ namespace CoreFlags
         {
             if (combosCache == null) {  
                 this.combos = new List<HashSet<COLOR>>();
-                GetCombosRec(combos, 2, 4, new());
+                GetCombosRec(combos, 2, 5, new());
                 combosCache = this.combos;
             } else
             {
@@ -253,7 +253,7 @@ namespace CoreFlags
 
         private void GetCombosRec(List<HashSet<COLOR>> combResult, int min, int max, List<COLOR> sofar)
         {
-            if (sofar.Count >= max)
+            if (sofar.Count > max)
             {
                 return;
             }
@@ -314,7 +314,10 @@ namespace CoreFlags
                 });
             }
 
-            relevantComboList = relevantComboList.OrderByDescending( rc => rc.flagsCount ).ToList();
+            relevantComboList = relevantComboList
+                .OrderBy(rc => rc.colors.Count()  )
+                .OrderByDescending( rc => rc.flagsCount )
+                .ToList();
 
             return ViewComponent(typeof(ColorTagListViewComponent), new ColorTagListModel()
             {

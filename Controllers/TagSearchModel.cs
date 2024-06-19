@@ -12,6 +12,8 @@ namespace CoreFlags
         public bool answers { get; set; }
 
         public List<int> flagIds { get; set; }
+        public bool minPop { get; set; } = true;
+
         public override string ToString()
         {
             return JsonSerializer.Serialize(this);

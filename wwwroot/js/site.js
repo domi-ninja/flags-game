@@ -3,6 +3,51 @@
 
 // Write your JavaScript code.
 
+function playOnType(event, flagId) {
+    var textEntered = event.target.value;
+    var flagNameElement = event.target.parentElement.querySelector(".flag-name");
+    var suggestionListEl = event.target.parentElement.querySelector(".flag-detail .country-suggestions");
+    var countrySuggestionsEl = event.target.parentElement.querySelector(".country-suggestions");
+    var solution = flagNameElement.innerText;
+
+    if (event.key == 'Enter') {
+        submitAnswer(event, flagId);
+    } else {
+        var textEntered = event.target.value;
+        //if (textEntered.length < 3) {
+        //  return;
+        //}
+
+        var matches = window.flags.filter(f => {
+          return f.toLowerCase().indexOf(textEntered.toLowerCase()) != -1;
+        });
+
+        matches.sort();
+        function rank(match) {
+            var quality = 0;
+            var fStart = match.substr(0, textEntered.length);
+            if (fStart.toLowerCase() === textEntered.toLowerCase()) {
+                quality = 10;
+            } else {
+
+            }
+            return quality;
+        }
+        matches.sort((m1, m2) => {
+            return rank(m2) - rank(m1);
+        });
+
+        matches = matches.slice(0, 5);
+
+        suggestionListEl.innerHTML = matches.map(m => `<li>${m}</li>`).join("");
+    }
+}
+
+function playOnBlur(event) {
+    var suggestionListEl = event.target.parentElement.querySelector(".flag-detail .country-suggestions");
+    suggestionListEl.innerHTML = "";
+}
+
 function submitAnswer(event, flagId){
   var textEntered = event.target.value;
   var flagNameElement = event.target.parentElement.querySelector(".flag-name");
@@ -74,7 +119,18 @@ function init(){
   if ( !storage_text ) {
   } else {
     save = JSON.parse( storage_text );
-  }
+    }
+
+    // read json array
+    fetch("api/flag/Names")
+      .then(response => response.json())
+      .then(data => {
+        // Process the JSON array here
+        window.flags = data;
+      })
+      .catch(error => {
+        console.error("Error fetching JSON array:", error);
+      });
 }
 
 init()

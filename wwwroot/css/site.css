@@ -48,6 +48,7 @@ body {
 
 .flag-detail {
     font-size: 14px;
+    position:relative;
 }
 
 .flag.mini .img-wrapper img {
@@ -139,6 +140,26 @@ section {
     border: none;
 }
 
-.btn-success.btn-warning {
+.btn-hard {
+    background-color: #2fda8b;
+}
+
+.btn-medium {
+    background-color: #34da2f;
+}
+
+.btn-easy {
     background-color: #b6ff00;
+}
+
+.country-suggestions {
+    position: absolute;
+    top: 36px;
+    background-color: white;
+    border: 1px solid lightgray;
+    border-top: none;
+}
+.country-suggestions li {
+    border-top: 1px solid lightgray;
+    width: auto;
 }
