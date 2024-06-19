@@ -67,6 +67,17 @@ body {
 
 .flag-detail {
     max-width: 100px;
+    margin-bottom: 2.5em;
+}
+
+.flag-detail .flag-name {
+    max-height: 2em;
+    margin: 0;
+}
+
+.flag-detail .color {
+    display: inline-block;
+    padding: 3px;
 }
 
 .flag-detail input[type="submit"] {

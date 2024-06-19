@@ -1,5 +1,6 @@
 ﻿@model XFlagModel
-
+@{
+}
 
 <div class="flag-grid">
     <div class="flag">
@@ -17,6 +18,13 @@
                 @foreach (var tag in Model.flag.flagTags)
                 {
                     <div class="badge bg-secondary">@tag.Tag.name</div>
+                }
+
+                @foreach (var colorTag in Model.flag.colorTags)
+                {
+                    <div class="color" style="background-color: @colorTag.FlagColor.rgb">
+                        @colorTag.FlagColor.name.ToCharArray().FirstOrDefault()
+                    </div>
                 }
             } else {
                 <p class="flag-name hidden"><b>@Model.flag.name</b></p>

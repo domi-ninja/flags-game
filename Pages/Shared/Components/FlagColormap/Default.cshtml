@@ -24,6 +24,12 @@
 
         dict.Add(kvp.Key.ToArgb(), kvp.Value.ToString()); 
     }
+
+    @{
+        dict.Add(Color.White.ToArgb(), "WHITE");
+        dict.Add(Color.Black.ToArgb(), "BLACK");
+
+    }
 </table>
 
 <ul style="display: flex;flex-wrap: wrap;">
@@ -33,8 +39,8 @@
         i++;
 
         <text>
-        <li>
-            <img src="@flag.url" />
+        <li style="list-style: none; margin-right: 10px;">
+            <img src="@flag.url" style="width: 100px; height: 50px;" />
             <table>
                     @foreach (var kvp in mapping)
                     {

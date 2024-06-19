@@ -1,0 +1,16 @@
+﻿@model ColorTagListModel
+
+
+
+
+    @foreach (var tag in Model.tags)
+    {
+        <li class="btn btn-primary" hx-post="/api/Flag/ListQuestion" hx-vals='js:{"colorTagId": @tag.colors}' hx-target="#flag-list">
+            @tag.flagsCount
+        @foreach (var color in tag.colors )
+        {
+            <div class="color" style="background-color: @color.color; display: inline-block; width: 10px; height: 10px;">
+            </div>
+        }    
+    </li>
+    }

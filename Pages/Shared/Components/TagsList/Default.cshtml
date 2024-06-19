@@ -37,5 +37,9 @@
     {
         <li class="btn btn-secondary" hx-get="/api/Flag/List" hx-vals='js:{tagId: @tag.Id}' hx-target="#flag-list">@tag.name</li>
     }
+
+
+    <div hx-get="/api/Color/RelevantCombos" hx-trigger="load"></div>
+
 </ul>
 <hr />
