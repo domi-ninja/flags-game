@@ -20,12 +20,14 @@
                     <div class="badge bg-secondary">@tag.Tag.name</div>
                 }
 
-                @foreach (var colorTag in Model.flag.colorTags)
-                {
-                    <div class="color" style="background-color: @colorTag.FlagColor.rgb">
-                        @colorTag.FlagColor.name.ToCharArray().FirstOrDefault()
-                    </div>
-                }
+@*                 @if (Model.flag.colorTags != null) {
+                    @foreach (var colorTag in Model.flag.colorTags)
+                    {
+                        <div class="color" style="background-color: @colorTag.FlagColor.rgb">
+                            @colorTag.FlagColor.name.ToCharArray().FirstOrDefault()
+                        </div>
+                    }
+                } *@
             } else {
                 <p class="flag-name hidden"><b>@Model.flag.name</b></p>
                 <input class="form-control" type="search" 

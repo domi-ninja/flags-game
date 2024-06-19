@@ -7,32 +7,19 @@
 
 
 <div id="flag-list">
-   
-    <div class="btn btn-success" hx-vals="js:{ seed: @(random.NextInt64()%100),  }" hx-get="/api/Flag/TagButtons" hx-trigger="load, click" hx-target="#tag-buttons">
-        Play
-    </div>
 
-    <div class="btn btn-warning" hx-get="/api/Flag/TagButtons" hx-trigger="load, click" hx-target="#tag-buttons">
-        Replay previously wrong
-    </div>
-
-    <div class="btn btn-secondary" hx-get="/api/Flag/TagButtons" hx-trigger="load, click" hx-target="#tag-buttons">
-        Solution    
-    </div>
-
-
-    <div id="tag-buttons"></div>
 
     <section>
-        <div class="flags-grid" style="display: flex">
+        <div id="flags-grid" class="flags-grid" style="display: flex">
             @foreach (var flag in Model.Flags)
             {
                 flag.flagTags = new List<Models.FlagTag>();
                 <text>
-                    @await Component.InvokeAsync(typeof(XFlagViewComponent), new XFlagModel(){
-                        flag = flag,
-                        answerable = false
-                    })
+                    @await Component.InvokeAsync(typeof(XFlagViewComponent), new XFlagModel()
+           {
+               flag = flag,
+               answerable = false
+           })
                 </text>
             }
         </div>
