@@ -38,7 +38,7 @@ asp-controller="Flag" asp-action="Tag"
 
                         <div class="flag">
                             <div class="img-wrapper">
-                                <img src="@flagTag.Flag.url" alt="@flagTag.Flag.name" />
+                                <img src="flags/small/@flagTag.Flag.url.Replace("/flags", "")" alt="@flagTag.Flag.name" />
                             </div>
                             <div class="flag-detail">
                                 <form asp-page-handler="RemoveFlagTag" method="post" enctype="multipart/form-data">
@@ -69,7 +69,7 @@ asp-controller="Flag" asp-action="Tag"
                         }
                         <div class="flag @conditionalClasses" >
                             <div class="img-wrapper">
-                                <img src="@flag.url" alt="@flag.name" />
+                                <img src="flags/small/@flag.url.Replace("/flags", "")" alt="@flag.name" />
                             </div>
                             <div class="flag-detail">
                                 <form asp-page-handler="AddFlagTag" method="post" enctype="multipart/form-data">
