@@ -28,27 +28,30 @@ body {
     padding: 0;
 }
 
-.flag .img-wrapper img {
-    width: 100px;
-    height: 60px;
-    object-fit: cover;
-    object-position: center;
-    border: 1px solid black;
-}
+    .flag .img-wrapper img {
+        max-width: 90px;
+        max-height: 60px;
+        object-fit: cover;
+        object-position: center;
+        border: 1px solid black;
+    }
 
-.flag .img-wrapper {
-    width: 100px;
-    height: 60px;
-}
+    .flag .img-wrapper {
+        width: 90px;
+        height: 60px;
+        background-image: radial-gradient(circle at 1px 1px, #aaa 1px, transparent 0);
+        background-size: 5px 5px;
+        background-position: 2px 2px;
+    }
 
-.flag.mini .img-wrapper {
-    width: 60px;
-    height: 48px;
-}
+    .flag.mini .img-wrapper {
+        width: 60px;
+        height: 48px;
+    }
 
 .flag-detail {
     font-size: 14px;
-    position:relative;
+    position: relative;
 }
 
 .flag.mini .img-wrapper img {
@@ -59,7 +62,7 @@ body {
     border: 1px solid black;
 }
 
-.flag.mini .flag-detail{
+.flag.mini .flag-detail {
     width: 60px;
     overflow: hidden;
     line-break: none;
@@ -71,19 +74,19 @@ body {
     margin-bottom: 2.5em;
 }
 
-.flag-detail .flag-name {
-    max-height: 2em;
-    margin: 0;
-}
+    .flag-detail .flag-name {
+        max-height: 2em;
+        margin: 0;
+    }
 
-.flag-detail .color {
-    display: inline-block;
-    padding: 3px;
-}
+    .flag-detail .color {
+        display: inline-block;
+        padding: 3px;
+    }
 
-.flag-detail input[type="submit"] {
-    width: 100%;
-}
+    .flag-detail input[type="submit"] {
+        width: 100%;
+    }
 
 .flags-grid {
     display: flex;
@@ -154,7 +157,6 @@ section {
 
 .btn-orange {
     background-color: #ff8c00;
-
 }
 
 .country-suggestions {
@@ -164,10 +166,11 @@ section {
     border: 1px solid lightgray;
     border-top: none;
 }
-.country-suggestions li {
-    border-top: 1px solid lightgray;
-    width: auto;
-}
+
+    .country-suggestions li {
+        border-top: 1px solid lightgray;
+        width: auto;
+    }
 
 /* clears the ‘X’ from Chrome */
 input[type="search"]::-webkit-search-decoration,
