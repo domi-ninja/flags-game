@@ -157,8 +157,11 @@ namespace CoreFlags
             if (searchModel.answers)
             {
                 var (tags2, flags2) = LoadData(searchModel.tagId, flagIds: searchModel.flagIds);
-
-                return ViewComponent(typeof(FlagListViewComponent), new FlagListModel() { Flags = flags2, Tags = tags2 });
+               
+                return ViewComponent(typeof(FlagListViewComponent), new FlagListModel() { 
+                    Flags = flags2, 
+                    Tags = tags2,  
+                });
             }
 
             int minPop = searchModel.minPop ? 1000_000 : 0;
@@ -168,6 +171,12 @@ namespace CoreFlags
             {
                 flag.population = 0;
                 flag.flagTags = new List<FlagTag>();
+            }
+
+            Dictionary<int, AnswerStat> answeringStats = null;
+            if (!String.IsNullOrEmpty(searchModel.answeringStats))
+            {
+                answeringStats = JsonSerializer.Deserialize<Dictionary<int, AnswerStat>>(searchModel.answeringStats);
             }
 
             if (!String.IsNullOrEmpty(searchModel.fails))
@@ -191,13 +200,19 @@ namespace CoreFlags
             if (searchModel.random)
             {
                 flags = flags.Randomize().ToList();
+            } else if ( answeringStats !=null )
+            {
+                flags = flags
+                        .OrderBy(f => (answeringStats?.GetValueOrDefault(f.Id)?.rank() ?? 0))
+                        .ToList();
             }
             return ViewComponent(typeof(FlagListAnswerableViewComponent),
               new FlagListAnswerableModel()
               {
                   Flags = flags,
                   Tags = tags,
-                  Random = searchModel.random
+                  Random = searchModel.random,
+                  answeringStats = answeringStats,
               }
             );
         }

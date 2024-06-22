@@ -11,7 +11,8 @@
                 <text>
                     @await Component.InvokeAsync(typeof(XFlagViewComponent), new XFlagModel(){
                         flag = flag,
-                        answerable = true
+                        answerable = true,
+                        answeringStats = Model?.answeringStats?.GetValueOrDefault(flag.Id) ?? new FlagList.AnswerStat()
                     })
                 </text>
 

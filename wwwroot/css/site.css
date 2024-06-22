@@ -152,6 +152,11 @@ section {
     background-color: #b6ff00;
 }
 
+.btn-orange {
+    background-color: #ff8c00;
+
+}
+
 .country-suggestions {
     position: absolute;
     top: 36px;
@@ -162,4 +167,12 @@ section {
 .country-suggestions li {
     border-top: 1px solid lightgray;
     width: auto;
+}
+
+/* clears the ‘X’ from Chrome */
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+    display: none;
 }
