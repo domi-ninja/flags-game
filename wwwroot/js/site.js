@@ -63,6 +63,9 @@ function playOnBlur(event) {
 
 function submitAnswer(event, flagId){
   var textEntered = event.target.value;
+  if (textEntered.length < 1) {
+    return;
+  }
   var flagNameElement = event.target.parentElement.querySelector(".flag-name");
   var lastSuggestionEl = event.target.parentElement.querySelector(".flag-detail li");
   var countrySuggestionsEl = event.target.parentElement.querySelector(".country-suggestions"); 
@@ -87,7 +90,14 @@ function submitAnswer(event, flagId){
   }
 
 
-  update_save_answer(flagId, correct);
+    update_save_answer(flagId, correct);
+
+    var allInputs = Array.from(  document.querySelector("#flag-list").querySelectorAll("input") );
+    var currentIndex = allInputs.indexOf(event.target);
+    var nextInput = allInputs[currentIndex + 1];
+    if (nextInput) {
+        nextInput.focus();
+    }
 }
 
 function update_save_answer(flagId, correct){
