@@ -20,35 +20,7 @@
         <div class="flag-detail">
  
 
-            @if (Model.answeringStats != null)
-            {
-                if (Model.answeringStats.right > 0)
-                {
-                    <text>
-                        <span class="right badge bg-success">
-                            @Model.answeringStats.right
-                        </span>
-                    </text>
-                }
-                if (Model.answeringStats.wrong > 0)
-                {
-                    <text>
-                        <span class="wrong badge bg-danger">
-                            @Model.answeringStats.wrong
-                        </span>
-                    </text>
-                }
-                if ( Model.answeringStats.right == 0 && Model.answeringStats.wrong == 0)
-                {
-                    <text>
-                        <span class="badge bg-secondary">
-                            0
-                        </span>
-                    </text>
-                }
-
-            }
-            else if (@Model.flag.population != 0)
+            @if ( Model.flag.population != 0)
             {
                 <span>@(MathF.Floor(Model.flag.population / 10000f) / 100f) M</span>
             }
@@ -81,6 +53,35 @@
                        autocomplete="off">
                 <div class="country-suggestions country-suggestions-@Model.flag.Id">
                 </div>
+            }
+
+            @if (Model.answeringStats != null)
+            {
+                if (Model.answeringStats.right > 0)
+                {
+                    <text>
+                        <span class="right badge bg-success">
+                            @Model.answeringStats.right
+                        </span>
+                    </text>
+                }
+                if (Model.answeringStats.wrong > 0)
+                {
+                    <text>
+                        <span class="wrong badge bg-danger">
+                            @Model.answeringStats.wrong
+                        </span>
+                    </text>
+                }
+                if ( Model.answeringStats.right == 0 && Model.answeringStats.wrong == 0)
+                {
+                    <text>
+                        <span class="badge bg-secondary">
+                            0
+                        </span>
+                    </text>
+                }
+
             }
         </div>
     </div>
