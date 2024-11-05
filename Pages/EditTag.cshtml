@@ -11,7 +11,7 @@
 
 
 @*
-<div hx-post="/api/Flag/Tag" hx-trigger="">
+<div hx-post="/flags/api/Flag/Tag" hx-trigger="">
 
 </div>
 
@@ -23,7 +23,7 @@ asp-controller="Flag" asp-action="Tag"
         <section>
             <h2> Editing Tag </h2>
             <input hx-vals='{"Id": @Model.Tag.Id}' name="name" type="text" value="@Model.Tag.name" class="tag"
-                   hx-put="/api/Flag/Tag" hx-trigger="keyup changed delay:0.5s" hx-swap="None" />
+                   hx-put="/flags/api/Flag/Tag" hx-trigger="keyup changed delay:0.5s" hx-swap="None" />
 
             <a class="btn btn-primary" href="/Edit"> Back</a>
 
@@ -33,7 +33,7 @@ asp-controller="Flag" asp-action="Tag"
                 <div class="col-2 clicky">
                     @foreach (var flagTag in Model.Tag.flagTags)
                     {
-                        @*<div class="flag" hx-vals='{"TagId": @Model.Tag.Id, FlagId: @flag.Id}' hx-post="/api/Flag/FlagTag">*@
+                        @*<div class="flag" hx-vals='{"TagId": @Model.Tag.Id, FlagId: @flag.Id}' hx-post="/flags/api/Flag/FlagTag">*@
 
 
                         <div class="flag">
@@ -57,10 +57,10 @@ asp-controller="Flag" asp-action="Tag"
                     {
                         @* .Where( f=> ! Model.Tag.flagTags.Any( (ft) => ft.FlagId == f.Id ) ) *@
 
-                        @*<div class="flag" hx-vals='{"TagId": @Model.Tag.Id, FlagId: @flag.Id}' hx-post="/api/Flag/FlagTag">*@
+                        @*<div class="flag" hx-vals='{"TagId": @Model.Tag.Id, FlagId: @flag.Id}' hx-post="/flags/api/Flag/FlagTag">*@
 
 
-                        @*                                 <div class="flag" hx-vals='{"TagId": @Model.Tag.Id, FlagId: @flag.Id}' hx-post="/api/Flag/FlagTag">
+                        @*                                 <div class="flag" hx-vals='{"TagId": @Model.Tag.Id, FlagId: @flag.Id}' hx-post="/flags/api/Flag/FlagTag">
                     *@
                         <div id="flag-@flag.Id"></div>
                         string conditionalClasses = "";

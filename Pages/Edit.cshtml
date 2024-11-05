@@ -14,7 +14,7 @@
 
 
 @*
-<div hx-post="/api/Flag/Tag" hx-trigger="">
+<div hx-post="/flags/api/Flag/Tag" hx-trigger="">
 
 </div>
 
@@ -41,8 +41,8 @@ asp-controller="Flag" asp-action="Tag"
             <li class="tag-@tag.Id" id="tag-@tag.Id">
                 <section>
                     <input hx-vals='{"Id": @tag.Id}' name="name" type="text" value="@tag.name" class="tag"
-                        hx-put="/api/Flag/Tag" hx-trigger="keyup changed delay:0.5s" hx-swap="None" />
-                    <button hx-vals='{"tagId": @tag.Id}' class="" hx-delete="/api/Flag/Tag" hx-target=".tag-@tag.Id"
+                        hx-put="/flags/api/Flag/Tag" hx-trigger="keyup changed delay:0.5s" hx-swap="None" />
+                    <button hx-vals='{"tagId": @tag.Id}' class="" hx-delete="/flags/api/Flag/Tag" hx-target=".tag-@tag.Id"
                         hx-swap="outerHTML">
                         X
                     </button>
