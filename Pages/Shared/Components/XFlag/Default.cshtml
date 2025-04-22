@@ -7,8 +7,7 @@
     </div>
     <div class="flag-detail">
         @if (@Model.flag.population!=0){
-            <span>@Model.flag.Id</span><br>
-            <span>@Model.flag.population</span>
+            <span>@( MathF.Floor(Model.flag.population/10000f) / 100f ) M</span>
         }
 
 
