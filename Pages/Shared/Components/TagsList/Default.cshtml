@@ -14,6 +14,6 @@
         <li class="btn @Model.TagColorCss" hx-post="/api/Flag/ListQuestion" hx-vals='js:{  @Model.TagParamsStr , "tagId": @tag.Id}' hx-target="#flags-grid">@tag.name</li>
     }
 
-    <div hx-get="/api/Color/RelevantCombos" hx-vals="js:{ TagColorCss: '@Model.TagColorCss', TagParamsStr: '@Model.TagParamsStr'}" hx-trigger="load"></div>
+    <div style="min-height: 82px;" hx-get="/api/Color/RelevantCombos" hx-vals="js:{ TagColorCss: '@Model.TagColorCss', TagParamsStr: '@Model.TagParamsStr'}" hx-trigger="load"></div>
 
 </ul>
