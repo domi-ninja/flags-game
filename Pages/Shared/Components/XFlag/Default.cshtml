@@ -1,11 +1,12 @@
 ﻿@model XFlagModel
 @{
+    var r= new Random();
 }
 
 <div class="flag-grid">
     <div class="flag">
         <div class="img-wrapper">
-            <img src="@Model.flag.url" alt="@Model.flag.name" />
+            <img src="@Model.flag.url?v=2" alt="@Model.flag.name" />
         </div>
         <div class="flag-detail">
             @if (@Model.flag.population!=0){
