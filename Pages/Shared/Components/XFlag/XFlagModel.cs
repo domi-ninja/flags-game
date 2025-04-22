@@ -8,5 +8,7 @@ public class XFlagModel
 
     public Models.Flag flag {get; set;}
 
+
+
     public bool answerable {get; set;}
 }

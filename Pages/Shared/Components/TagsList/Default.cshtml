@@ -5,7 +5,7 @@
 
 
 <b>Trials</b>
-<ul>
+<ul class="tags">
     <li class="btn btn-primary" hx-post="/api/Flag/ListQuestion" hx-vals='js:{seed:@(random.NextInt64()%100) }' hx-target="#flag-list">All</li>
     <li class="btn btn-primary" hx-post="/api/Flag/ListQuestion" hx-vals='js:{seed:@(random.NextInt64()%100), "tagId": -1}' hx-target="#flag-list">Untagged</li>
 
@@ -17,7 +17,7 @@
 <hr />
 
     <b>Previously wrong</b>
-<ul>
+<ul class="tags">
     <li class="btn btn-warning" hx-post="/api/Flag/ListQuestion" hx-vals='js:{seed:@(random.NextInt64()%100), fails: get_fails()}' hx-target="#flag-list">All</li>
     <li class="btn btn-warning" hx-post="/api/Flag/ListQuestion" hx-vals='js:{seed:@(random.NextInt64()%100), fails: get_fails(), tagId: -1}' hx-target="#flag-list">Untagged</li>
 
@@ -29,7 +29,7 @@
 <hr />
 
 <b>Solutions</b>
-<ul>
+<ul class="tags">
     <li class="btn btn-secondary" hx-get="/api/Flag/List" hx-vals='js:{}' hx-target="#flag-list">All</li>
     <li class="btn btn-secondary" hx-get="/api/Flag/List" hx-vals='js:{tagId: -1}' hx-target="#flag-list">Untagged</li>
 
