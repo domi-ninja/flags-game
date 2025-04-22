@@ -32,15 +32,16 @@
                 <p class="flag-name hidden"><b>@Model.flag.name</b></p>
                 <input class="form-control" type="search" 
                     name="search" placeholder="" 
-                    hx-post="/api/Flag/SearchCountry" 
-                    hx-trigger="input changed delay:0ms, search" 
-                    hx-target=".country-suggestions-@Model.flag.Id" 
-                    @* hx-indicator=".htmx-indicator" *@
-                    hx-on:keyup="if (event.key=='Enter') submitAnswer(event, @Model.flag.Id)" 
-                    >
+                    hx-target=".country-suggestions-@Model.flag.Id"
+                    hx-on:keyup="playOnType(event, @Model.flag.Id)"
+                    hx-on:blur="playOnBlur(event)"                    
+                    autocomplete="off">
                 <div class="country-suggestions country-suggestions-@Model.flag.Id">
                 </div>
             }
         </div>
     </div>
 </div>
+
+@*                     
+ *@     

@@ -48,7 +48,7 @@
                         continue;
                     }
                     <text>
-                        <div style="background-color: @ColorToHex( dict[color] ); @styles"> @color</div>
+                        <div style="background-color: @ColorToHex( dict[color] ); color: @ColorToHex( dict[color] ); @styles"> @color</div>
                     </text>
                     
                 }
@@ -57,7 +57,7 @@
                 <div>
                     @foreach (var flagUrl in combResult.flagUrls)
                     {
-                    <img style="width: 50px; height: 20px;" src="@flagUrl" />
+                    <img style="width: 50px; height: 30px;" src="@flagUrl" />
                     }
                 </div>
             </li>

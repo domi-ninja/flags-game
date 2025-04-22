@@ -142,21 +142,26 @@ namespace CoreFlags
             return ViewComponent(typeof(FlagListViewComponent), new FlagListModel() { Flags = flags, Tags = tags });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Names()
+        {
+            var (tags, flags) = LoadData();
+
+            return Json(flags.Select(f=>f.name));
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> ListQuestion(TagSearchModel searchModel)
         {
-            int minPop = 0;
-            if (searchModel.tagId == null)
-            {
-                minPop = 1000000;
-            }
-
             if (searchModel.answers)
             {
-                var (tags2, flags2) = LoadData(searchModel.tagId, minPop: minPop, flagIds: searchModel.flagIds);
+                var (tags2, flags2) = LoadData(searchModel.tagId, flagIds: searchModel.flagIds);
 
                 return ViewComponent(typeof(FlagListViewComponent), new FlagListModel() { Flags = flags2, Tags = tags2 });
             }
+
+            int minPop = searchModel.minPop ? 1000_000 : 0;
 
             var (tags, flags) = LoadData(tagId: searchModel.tagId, flagIds: searchModel.flagIds, minPop: minPop);
             foreach (var flag in flags)
