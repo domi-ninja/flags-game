@@ -1,5 +1,12 @@
-﻿@using CoreFlags
-@model Edit
+﻿@model FlagEditModel
+
+<label>tag<input type="text" name="name" hx-target="/api/flag/tag" /></label>
+<ul>
+@foreach (var tag in Model.Tags)
+{
+    <li class="tag">@tag.name</li>
+}
+</ul>
 
 @foreach (var flag in Model.Flags)
 {

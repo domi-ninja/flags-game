@@ -1,33 +1,70 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using flags_game;
+using flags_game.Models;
+using flags_game.Pages.Shared.Components.FlagList;
+using flags_game.Pages.Shared.Components.XxYy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting.Internal;
 
 namespace CoreFlags
 {
     public class FlagController : Controller
     {
         private readonly IWebHostEnvironment webHostEnvironment;
+        private readonly FlagAppDbContext dbContext;
 
-        public FlagController(IWebHostEnvironment webHostEnvironment)
+        public FlagController(IWebHostEnvironment webHostEnvironment, FlagAppDbContext dbContext)
         {
             this.webHostEnvironment= webHostEnvironment;
+            this.dbContext = dbContext;
         }
 
         [HttpGet]
         public IActionResult Edit()
         {
             List<Flag> flags = this.SyncFlags();
+            var tags = dbContext.tags.ToList();
 
-            return ViewComponent("Edit", new Edit() { Flags = flags });
+            return ViewComponent("XxYy", new FlagEditModel() { Flags = flags, Tags = tags });
+        }
+
+        [HttpPost]
+        public IActionResult Tag(string newTagName) 
+        { 
+            var newTag = dbContext.tags.Add(new Tag() { name = newTagName });
+            dbContext.SaveChanges();
+
+            var tags = dbContext.tags.ToList();
+            return ViewComponent(typeof(FlagTagListViewComponent), new FlagTagListModel() { Tags = tags });
+        }
+
+        [HttpGet]
+        public IActionResult Tags()
+        {
+            var tags = dbContext.tags.ToList();
+
+            return ViewComponent(typeof(FlagTagListViewComponent), new FlagTagListModel() { Tags = tags });
+        }
+
+
+        [HttpDelete]
+        public IActionResult Tag( int tagId )
+        {
+            dbContext.tags.Remove( dbContext.tags.Find(tagId) );
+            dbContext.SaveChanges();
+
+            var tags = dbContext.tags.ToList();
+            return ViewComponent(typeof(FlagTagListViewComponent), new FlagTagListModel() { Tags = tags });
         }
 
 
         [HttpGet]
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
             List<Flag> flags = this.SyncFlags();
-         
-            return ViewComponent("FlagList", new Edit() { Flags = flags });
+            var tags = dbContext.tags.ToList();
+
+            return ViewComponent("FlagList", new FlagListModel() { Flags = flags, Tags = tags });
         }
 
         private List<Flag> SyncFlags()
@@ -51,15 +88,6 @@ namespace CoreFlags
         }
     }
 
-    public class Flag
-    {
-        public string name { get; set; }
-        public string url { get; set; }
-    }
 
-    public class Tag
-    {
-        public string name { get; set; }
-    }
 
 }
