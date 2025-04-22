@@ -1,4 +1,5 @@
-﻿using CoreFlags;
+﻿using System.Text.Json;
+using CoreFlags;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +15,7 @@ namespace flags_game.Models
 
         public FlagAppDbContext(DbContextOptions<FlagAppDbContext> options) : base(options)
         {
-            //dbPath = "flags.db";
+
         }
 
         // dotnet tool install --global dotnet-ef
@@ -34,6 +35,11 @@ namespace flags_game.Models
         public int FlagId { get; set; }
         public int TagId { get; set; }
         public Flag Flag { get; set; }
+
+        public override string ToString()
+        {
+            return JsonSerializer.Serialize( this );
+        }
     }
 
 
@@ -45,6 +51,12 @@ namespace flags_game.Models
 
         public List<FlagTag> flagTags { get; set; } = new List<FlagTag>();
         public long population { get; internal set; }
+
+        public override string ToString()
+        {
+            return JsonSerializer.Serialize( this );
+        }
+
     }
 
     public class Tag
@@ -53,5 +65,9 @@ namespace flags_game.Models
         public string name { get; set; }
         public List<FlagTag> flagTags { get; set; } = new List<FlagTag>();
 
+        public override string ToString()
+        {
+            return JsonSerializer.Serialize( this );
+        }
     }
 }

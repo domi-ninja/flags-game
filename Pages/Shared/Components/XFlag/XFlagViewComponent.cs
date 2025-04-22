@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using flags_game.Models;
+using flags_game.Pages.Shared.Components.TagsList;
 
 namespace flags_game;
 
@@ -7,9 +8,9 @@ namespace flags_game;
 public class XFlagViewComponent : ViewComponent
 {
 
-    public IViewComponentResult Invoke(Models.Flag model)
+    public IViewComponentResult Invoke(XFlagModel model)
     {
-        return this.View( model);
+        return this.View( model );
     }
 
 }

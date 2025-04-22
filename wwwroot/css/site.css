@@ -42,17 +42,27 @@ body {
 }
 
 .flag.mini .img-wrapper {
-    width: 30px;
-    height: 24px;
+    width: 60px;
+    height: 48px;
 }
 
+.flag-detail {
+    font-size: 14px;
+}
 
 .flag.mini .img-wrapper img {
-    width: 30px;
-    height: 24px;
+    width: 60px;
+    height: 48px;
     object-fit: cover;
     object-position: center;
     border: 1px solid black;
+}
+
+.flag.mini .flag-detail{
+    width: 60px;
+    overflow: hidden;
+    line-break: none;
+    height: 18px;
 }
 
 .flag-detail {
@@ -98,4 +108,16 @@ section {
 
 .clicky {
     cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+.red {
+    color: red;
+}
+
+.green {
+    color: green;
 }

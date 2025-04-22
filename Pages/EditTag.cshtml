@@ -53,14 +53,21 @@ asp-controller="Flag" asp-action="Tag"
                 </div>
 
                 <div class="flags-grid col clicky">
-                    @foreach (var flag in Model.Flags.Where( f=> ! Model.Tag.flagTags.Any( (ft) => ft.FlagId == f.Id ) ) )
+                    @foreach (var flag in Model.Flags )
                     {
+                        @* .Where( f=> ! Model.Tag.flagTags.Any( (ft) => ft.FlagId == f.Id ) ) *@
+
                         @*<div class="flag" hx-vals='{"TagId": @Model.Tag.Id, FlagId: @flag.Id}' hx-post="/api/Flag/FlagTag">*@
 
 
                         @*                                 <div class="flag" hx-vals='{"TagId": @Model.Tag.Id, FlagId: @flag.Id}' hx-post="/api/Flag/FlagTag">
                     *@
-                        <div class="flag">
+                        <div id="flag-@flag.Id"></div>
+                        string conditionalClasses = "";
+                        if ( Model.Tag.flagTags.Any( (ft) => ft.FlagId == flag.Id ) ){
+                            conditionalClasses+="hidden";
+                        }
+                        <div class="flag @conditionalClasses" >
                             <div class="img-wrapper">
                                 <img src="@flag.url" alt="@flag.name" />
                             </div>
@@ -70,7 +77,11 @@ asp-controller="Flag" asp-action="Tag"
                                     <input type="hidden" name="FlagId" value="@flag.Id" />
                                     <input type="submit" value="+">
                                 </form>
-                                <p><b>@flag.name</b></p>
+                                <p>
+                                    <span>@flag.Id</span><br>
+                                    <span>@flag.population</span><br>
+                                    <b>@flag.name</b>
+                                </p>
                             </div>
                         </div>
                     }

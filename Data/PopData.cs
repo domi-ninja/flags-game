@@ -1,4 +1,4 @@
-﻿namespace flags_game.Pages
+﻿namespace flags_game.Data
 {
     public class PopData
     {

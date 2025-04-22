@@ -48,7 +48,7 @@ namespace flags_game.Pages
             this.dbContext.flagTags.Add(flagTag);
             this.dbContext.SaveChanges();
             LoadData(flagTag.TagId);
-            return Redirect(Request.Path + "?tagId=" + flagTag.TagId );
+            return Redirect(Request.Path + "?tagId=" + flagTag.TagId  + "#flag-" +  flagTag.Flag.Id );
         }
 
 
@@ -57,7 +57,7 @@ namespace flags_game.Pages
             this.dbContext.flagTags.Remove(flagTag);
             this.dbContext.SaveChanges();
             LoadData(flagTag.TagId);
-            return Redirect(Request.Path + "?tagId=" + flagTag.TagId);
+            return Redirect(Request.Path + "?tagId=" + flagTag.TagId   );
         }
 
     }
