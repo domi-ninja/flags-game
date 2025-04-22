@@ -137,7 +137,7 @@ namespace CoreFlags
                     {
                     };
                     var colors = GetImageColorsSlow(image);
-                    colors = colors.Where(colors => colors.Value > 0.02 * image.Size.Width * image.Size.Height )
+                    colors = colors.Where(colors => colors.Value > 0.01 * image.Size.Width * image.Size.Height )
                         .OrderBy(colors => colors.Value)
                         .ToDictionary(colors => colors.Key, colors => colors.Value);
                     foreach (var (color, amount) in colors)
