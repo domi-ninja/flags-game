@@ -1,0 +1,64 @@
+﻿@using System.Drawing
+@using CoreFlags
+@using flags_game.Pages.Shared.Components.FlagColormapComponent
+
+@model FlagColormapModel
+
+@{
+    string ColorToHex(Color color) => "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
+    int i = 0;
+    string styles = "width: 20px; height: 20px; border: solid 1px black;";
+
+    var dict = new Dictionary<int, string>();
+}
+
+<table>
+    @foreach (var kvp in ColorController.hueToColorMap ) 
+    {
+        <text>
+        <tr>
+            <td style="background-color: @ColorToHex(kvp.Key); @styles"></td>
+            <td>@kvp.Value</td>
+        </tr>
+        </text>
+
+        dict.Add(kvp.Key.ToArgb(), kvp.Value.ToString()); 
+    }
+</table>
+
+<ul style="display: flex;flex-wrap: wrap;">
+    @foreach (Dictionary<Color, Color> mapping in Model.colorResult)
+    {
+        var flag = Model.flags[i];
+        i++;
+
+        <text>
+        <li>
+            <img src="@flag.url" />
+            <table>
+                    @foreach (var kvp in mapping)
+                    {
+                        int k = kvp.Value.ToArgb();
+                        var x = 1;
+                        <text>
+                            <tr>
+                                <td style="background-color: @ColorToHex(kvp.Key); @styles"></td>
+                                @*<td style="background-color: @ColorToHex(kvp.Value); @styles"></td>*@
+                                <td style="color: @ColorToHex(kvp.Value)">
+                                    @if ( dict.ContainsKey(k) ){
+                                        <text>
+                                            @dict[k]
+                                        </text>
+                                    }
+                                </td>
+                            </tr>
+                        </text>
+                    }
+            </table>
+        </li>
+        </text>
+
+
+    }
+
+</ul>

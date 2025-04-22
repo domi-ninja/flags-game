@@ -1,0 +1,69 @@
+﻿@using System.Drawing
+@using CoreFlags
+@using flags_game.Pages.Shared.Components.ColorUsage
+@using static CoreFlags.ColorController
+
+@model ColorUsageModel
+
+@{
+    string ColorToHex(Color color) => "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
+    int i = 0;
+    string styles = "width: 20px; height: 20px; border: solid 1px black; overflow: hidden;";
+
+    var dict = new Dictionary<COLOR, Color>();
+    dict.Add(COLOR.WHITE, Color.White);
+    dict.Add(COLOR.BLACK, Color.Black);
+}
+
+<table>
+    @foreach (var kvp in ColorController.hueToColorMap)
+    {
+        <text>
+        <tr>
+            <td style="background-color: @ColorToHex(kvp.Key); @styles"></td>
+            <td>@kvp.Value</td>
+        </tr>
+        </text>
+        if (!dict.ContainsKey(kvp.Value))
+        {
+            dict.Add(kvp.Value, kvp.Key);
+        }
+    }
+
+</table>
+
+@* 
+ *@
+<ul style="display: flex;flex-wrap: wrap; list-style: none;">
+    @foreach (var combResult in Model.combResult)
+    {
+        <text>
+        <li style="width: 100px; padding: 5px;">
+            <div style="display: flex">
+
+                @foreach (var color in combResult.colors)
+                {
+                    if (!dict.ContainsKey(color))
+                    {
+                        continue;
+                    }
+                    <text>
+                        <div style="background-color: @ColorToHex( dict[color] ); @styles"> @color</div>
+                    </text>
+                    
+                }
+
+                </div>
+                <div>
+                    @foreach (var flagUrl in combResult.flagUrls)
+                    {
+                    <img style="width: 50px; height: 20px;" src="@flagUrl" />
+                    }
+                </div>
+            </li>
+        </text>
+
+
+    }
+
+</ul>

@@ -7,7 +7,15 @@ using Microsoft.EntityFrameworkCore;
 using flags_game.Data;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using System.Net;
+using System;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO.Pipelines;
+using Microsoft.Identity.Client;
 
+using flags_game;
+using flags_game.Pages.Shared.Components.FlagColormapComponent;
 namespace flags_game.Pages
 {
     public class EditModel : PageModel
@@ -26,15 +34,20 @@ namespace flags_game.Pages
 
         public List<Tag> Tags { get; set; } = new List<Tag>();
         public List<Flag> Flags { get; set; } = new List<Flag>();
-        public string Logs {get; set; } = "";
+        public List<ColorTag> ColorTags { get; set; } = new List<ColorTag>();
 
-        public override string ToString(){
-            return JsonSerializer.Serialize( new{
+        public string Logs { get; set; } = "";
+
+        public override string ToString()
+        {
+            return JsonSerializer.Serialize(new
+            {
                 Tags,
                 Flags,
                 Logs
 
-            }, new JsonSerializerOptions(){
+            }, new JsonSerializerOptions()
+            {
                 ReferenceHandler = ReferenceHandler.IgnoreCycles,
             });
         }
@@ -49,8 +62,9 @@ namespace flags_game.Pages
             this.Flags = this.dbContext.flags
                 .Include(f => f.flagTags)
                 //.ThenInclude( ft => ft.Tag )
-                .OrderBy(r => r.population)
-                .Reverse()
+                .Include(f => f.colorTags)
+                    .ThenInclude(ft => ft.FlagColor)
+                .OrderByDescending(r => r.population)
                 .ToList();
         }
 
@@ -83,10 +97,206 @@ namespace flags_game.Pages
         //     this.Flags = SyncFlags();
         // }
 
-        public void OnPostSyncFlags() {
+        public void OnPostSyncFlags()
+        {
             this.Logs = SyncFlags();
+            // this.Logs += SyncFlagColors();
             LoadData();
             // return Redirect(Request.Path);
+        }
+
+
+
+        public enum COLOR
+        {
+            WHITE,
+            BLACK,
+            RED,
+            GREEN,
+            BLUE,
+            YELLOW,
+            ORANGE,
+            LIGHT_BLUE,
+        }
+
+        public Dictionary<Color, COLOR> hueToColorMap = new()
+        {
+            {  Color.Red, COLOR.RED },
+            {  Color.Green, COLOR.GREEN },
+            {  Color.FromArgb(255, 148, 0), COLOR.GREEN },
+            {  Color.Blue, COLOR.BLUE },
+            {  Color.FromArgb(255, 175, 0), COLOR.YELLOW },
+            {  Color.FromArgb(255, 135, 0), COLOR.ORANGE },
+            {  Color.Turquoise, COLOR.LIGHT_BLUE },
+        };
+
+        
+
+        private string ColorToHex( Color color ) => "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
+        private List<Dictionary<Color, Color>> SyncFlagColors()
+        {
+            //var flagColors = this.dbContext.flagColor.ToList();
+            //foreach (var color in Enum.GetValues(typeof(COLOR)))
+            //{
+            //    string rgb = ColorToHex(hueToColorMap.FirstOrDefault(kvp => kvp.Value == (COLOR)color).Key);
+            //    string colorName = color.ToString().ToLower();
+            //    if (!flagColors.Any(fc => fc.name == colorName))
+            //    {
+            //        this.dbContext.flagColor.Add(new FlagColor()
+            //        {
+            //            name = colorName,
+            //            rgb = rgb,
+            //        });
+            //    }
+            //}
+            //dbContext.SaveChanges();
+            //flagColors = this.dbContext.flagColor.ToList();
+
+            List<Dictionary<Color, Color>> result = new();
+
+            foreach (var flag in this.dbContext.flags)
+            {
+                var request = WebRequest.Create("http://localhost:5209/" + flag.url);
+                using (var response = request.GetResponse())
+                using (var stream = response.GetResponseStream())
+                {
+                    Bitmap image = Image.FromStream(stream) as Bitmap;
+
+                    var mapDebugDict = new Dictionary<Color, Color>();
+                    result.Add(mapDebugDict);
+
+                    var clampedColors = new Dictionary<Color, long>()
+                    {
+                    };
+                    var colors = GetImageColorsSlow(image);
+                    colors = colors.Where(colors => colors.Value > 100)
+                        .OrderBy(colors => colors.Value)
+                        .ToDictionary(colors => colors.Key, colors => colors.Value);
+                    foreach (var (color, amount) in colors)
+                    {
+                        var hue = color.GetHue();
+                        var saturation = color.GetSaturation();
+                        var brightness = color.GetBrightness();
+                        Color clampedColor;
+                        if (saturation < 0.35)
+                        {
+                            if (brightness < 0.2)
+                            {
+                                clampedColor = Color.Black;
+                            }
+                            else if (brightness > 0.8)
+                            {
+                                clampedColor = Color.White;
+                            }
+                            else
+                            {
+                                throw new Exception("Gray");
+                            }
+                        }
+                        else
+                        {
+                            var colorsByHowClose = hueToColorMap.OrderBy(kvp => Math.Abs(kvp.Key.GetHue() - hue));
+                            clampedColor = colorsByHowClose.First().Key;
+                        }
+
+                        mapDebugDict.Add(color, clampedColor);
+                        if (clampedColors.ContainsKey(clampedColor))
+                        {
+                            clampedColors[clampedColor] += amount;
+                        }
+                        else
+                        {
+                            clampedColors.Add(clampedColor, amount);
+                        }
+                    }
+                    
+                    foreach (var cc in clampedColors)
+                    {
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public static Dictionary<Color, long> GetImageColorsSlow(System.Drawing.Bitmap bmp)
+        {
+            var result = new Dictionary<Color, long>();
+
+            for (int x = 0; x< bmp.Width; x++)
+            {
+                for (int y = 0; y < bmp.Height; y++)
+                {
+                    Color pixelColor = bmp.GetPixel(x, y);
+
+                    if (result.ContainsKey(pixelColor))
+                    {
+                        result[pixelColor]++;
+                    }
+                    else
+                    {
+                        result.Add(pixelColor, 1);
+                    }
+                }
+            }
+            
+            return result;
+        }
+
+        public static Dictionary<Color, long> GetImageColors(System.Drawing.Bitmap bmp)
+        {
+            var result = new Dictionary<Color, long>();
+
+            Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+
+            System.Drawing.Imaging.BitmapData bmpData =
+                bmp.LockBits(rect,
+                    System.Drawing.Imaging.ImageLockMode.ReadOnly,
+                    bmp.PixelFormat);
+
+            IntPtr ptr = bmpData.Scan0;
+
+            int bytes = bmpData.Stride * bmp.Height;
+            byte[] rgbValues = new byte[bytes];
+
+            System.Runtime.InteropServices.Marshal.Copy(ptr,
+                           rgbValues, 0, bytes);
+
+            byte red = 0;
+            byte green = 0;
+            byte blue = 0;
+
+            for (int x = 0; x < bmp.Width; x++)
+            {
+                for (int y = 0; y < bmp.Height; y++)
+                {
+                    //See the link above for an explanation 
+                    //of this calculation
+                    int position = (y * bmpData.Stride) + (x * Image.GetPixelFormatSize(bmpData.PixelFormat) / 8);
+                    try
+                    {
+                        blue = rgbValues[position];
+                        green = rgbValues[position + 1];
+                        red = rgbValues[position + 2];
+                    }
+                    catch (System.IndexOutOfRangeException e)
+                    {
+
+                    }
+
+                    if (result.ContainsKey(Color.FromArgb(red, green, blue)))
+                    {
+                        result[Color.FromArgb(red, green, blue)]++;
+                    }
+                    else
+                    {
+                        result.Add(Color.FromArgb(red, green, blue), 1);
+                    }
+                }
+            }
+            bmp.UnlockBits(bmpData);
+
+            return result;
         }
 
         private string SyncFlags()
@@ -116,7 +326,7 @@ namespace flags_game.Pages
             foreach (var mf in missingFlags)
             {
                 this.dbContext.flags.Add(mf);
-                logs+=$"Missing flag added: {mf}\n";
+                logs += $"Missing flag added: {mf}\n";
             }
 
             var deletedFlags = existingFlags.Where(ef =>
@@ -126,7 +336,7 @@ namespace flags_game.Pages
             foreach (var df in deletedFlags)
             {
                 this.dbContext.flags.Remove(df);
-                logs+=$"Deleted flags removed: {df}\n";
+                logs += $"Deleted flags removed: {df}\n";
             }
 
             //  TODO update
@@ -157,11 +367,13 @@ namespace flags_game.Pages
                 var pop = StaticData.pop.FirstOrDefault(pd => flag.name.Contains(pd.country));
                 if (pop == null)
                 {
-                    logs+=$"Missing population dict entry: {flag.name}\n";
+                    logs += $"Missing population dict entry: {flag.name}\n";
                     continue;
-                } else
+                }
+                else
                 {
-                    if (flag.population!=pop.population) {
+                    if (flag.population != pop.population)
+                    {
                         flag.population = pop.population;
                         this.dbContext.flags.Update(flag);
                     }

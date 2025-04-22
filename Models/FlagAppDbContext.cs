@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using CoreFlags;
+using flags_game.Pages;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,8 @@ namespace flags_game.Models
         public DbSet<Flag> flags { get; set; }
         public DbSet<Tag> tags { get; set; }
         public DbSet<FlagTag> flagTags { get; set; }
+        public DbSet<ColorTag> colorTags { get; set; }
+        public DbSet<FlagColor> flagColor { get; set; }
 
         public string dbPath { get; private set; }
 
@@ -27,6 +30,8 @@ namespace flags_game.Models
         //    dcob.UseSqlite(dbPath);
         //}
     }
+
+
 
     public class FlagTag
     {
@@ -50,7 +55,8 @@ namespace flags_game.Models
         public string url { get; set; }
 
         public List<FlagTag> flagTags { get; set; } = new List<FlagTag>();
-        public long population { get; internal set; }
+        public long population { get; set; }
+        public List<ColorTag> colorTags { get; set; }
 
         public override string ToString()
         {
