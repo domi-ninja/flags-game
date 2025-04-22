@@ -165,12 +165,13 @@ section {
     background-color: white;
     border: 1px solid lightgray;
     border-top: none;
+    z-index: 10;
 }
 
-    .country-suggestions li {
-        border-top: 1px solid lightgray;
-        width: auto;
-    }
+.country-suggestions li {
+    border-top: 1px solid lightgray;
+    width: auto;
+}
 
 /* clears the ‘X’ from Chrome */
 input[type="search"]::-webkit-search-decoration,
