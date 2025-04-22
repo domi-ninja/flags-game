@@ -26,19 +26,26 @@ namespace CoreFlags
         }
 
 
-        public (List<Tag>, List<Flag>) LoadData(int? tagId)
+        public (List<Tag>, List<Flag>) LoadData(int? tagId = null, List<int> flagIds = null, int? minPop = null)
         {
             var tags = dbContext.tags
                 .Include(t => t.flagTags)
                 .OrderBy(r => r.name)
                 .ToList();
             var flags = this.dbContext.flags
+                .Where(f =>
+                    (
+                    (flagIds != null && flagIds.Count > 0 ? flagIds.Contains(f.Id) : true)
+                    &&
+                    (minPop != null ? f.population >= minPop : true)
+                    )
+                )
                 .Include(f => f.flagTags)
                     .ThenInclude(ft => ft.Tag)
-                .Include( f=> f.colorTags )
-                    .ThenInclude( ct=> ct.FlagColor )
+                .Include(f => f.colorTags)
+                    .ThenInclude(ct => ct.FlagColor)
                 .Where(f =>
-                    tagId.HasValue ? (tagId == -1 ? !f.flagTags.Any() : f.flagTags.Any(ft => ft.TagId == tagId)) : f.population > 1000000
+                    tagId.HasValue ? f.flagTags.Any(ft => ft.TagId == tagId) : true
                  )
                 .OrderBy(r => r.population)
                 .Reverse()
@@ -115,13 +122,15 @@ namespace CoreFlags
         }
 
         [HttpGet]
-        public IActionResult TagButtons( TagSearchModel searchModel )
+        public IActionResult TagButtons(TagSearchModel searchModel)
         {
             var tags = this.dbContext.tags.ToList();
             return ViewComponent(typeof(TagsListViewComponent), new TagsListModel()
             {
                 Tags = tags,
-                Seed = searchModel.seed,
+                Random = searchModel.random,
+                TagParamsStr = searchModel.TagParamsStr,
+                TagColorCss = searchModel.TagColorCss,
             });
         }
 
@@ -136,7 +145,20 @@ namespace CoreFlags
         [HttpPost]
         public async Task<IActionResult> ListQuestion(TagSearchModel searchModel)
         {
-            var (tags, flags) = LoadData(searchModel.tagId);
+            int minPop = 0;
+            if (searchModel.tagId == null)
+            {
+                minPop = 1000000;
+            }
+
+            if (searchModel.answers)
+            {
+                var (tags2, flags2) = LoadData(searchModel.tagId, minPop: minPop, flagIds: searchModel.flagIds);
+
+                return ViewComponent(typeof(FlagListViewComponent), new FlagListModel() { Flags = flags2, Tags = tags2 });
+            }
+
+            var (tags, flags) = LoadData(tagId: searchModel.tagId, flagIds: searchModel.flagIds, minPop: minPop);
             foreach (var flag in flags)
             {
                 flag.population = 0;
@@ -161,13 +183,16 @@ namespace CoreFlags
                 }
             }
 
-            flags = flags.Randomize(searchModel.seed).ToList();
+            if (searchModel.random)
+            {
+                flags = flags.Randomize().ToList();
+            }
             return ViewComponent(typeof(FlagListAnswerableViewComponent),
               new FlagListAnswerableModel()
               {
                   Flags = flags,
                   Tags = tags,
-                  Seed = searchModel.seed
+                  Random = searchModel.random
               }
             );
         }
@@ -183,16 +208,17 @@ namespace CoreFlags
 
 
         [HttpPost]
-        public IActionResult ListFlags( List<int> flagIds )
+        public IActionResult ListByIds(List<int> flagIds)
         {
-            var 
-            return Content("Lol");
+            var (tags, flags) = LoadData(flagIds: flagIds);
+
+            return ViewComponent(typeof(FlagListViewComponent), new FlagListModel() { Flags = flags, Tags = tags });
         }
 
         [HttpPost]
         public async Task<IActionResult> SearchCountry(string search)
         {
-            if (search.Length < 3) return Content("");
+            if (search==null || search.Length < 3) return Content("");
 
             string result = "";
             var flags = this.dbContext.flags.ToList()

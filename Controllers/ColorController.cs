@@ -76,6 +76,7 @@ namespace CoreFlags
             {  Color.Red, COLOR.RED },
             {  Color.Green, COLOR.GREEN },
             {  Color.FromArgb(52, 180, 50), COLOR.GREEN },
+            {  Color.FromArgb(0, 122, 94), COLOR.GREEN },
             {  Color.Blue, COLOR.BLUE },
             {  Color.FromArgb(0, 60, 120), COLOR.BLUE },
             {  Color.FromArgb(94, 180, 230), COLOR.LIGHTBLUE },
@@ -279,7 +280,7 @@ namespace CoreFlags
             }
         }
 
-        public IActionResult RelevantCombos()
+        public IActionResult RelevantCombos( TagSearchModel tagSearchModel)
         {
             var (flagColors, flags) = LoadData();
             LoadCombos();
@@ -318,6 +319,8 @@ namespace CoreFlags
             return ViewComponent(typeof(ColorTagListViewComponent), new ColorTagListModel()
             {
                tags = relevantComboList,
+               TagColorCss = tagSearchModel.TagColorCss,
+               TagParamsStr = tagSearchModel.TagParamsStr,
             });
         }
 

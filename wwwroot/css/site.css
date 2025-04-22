@@ -134,3 +134,11 @@ section {
 .green {
     color: green;
 }
+
+.btn {
+    border: none;
+}
+
+.btn-success.btn-warning {
+    background-color: #b6ff00;
+}
