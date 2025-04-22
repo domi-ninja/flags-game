@@ -78,7 +78,7 @@ namespace flags_game.Pages
             foreach (var file in files)
             {
                 string fileName = new FileInfo(file).Name;
-                string countryName = fileName.Split(".")[0].Split("Flag_of_")[1].Replace("_", " ");
+                string countryName = fileName.Split(".")[0].Split("Flag_of_")[1].Replace("_", " ").Replace("the ", "");
                 diskFlags.Add(new Flag()
                 {
                     name = countryName,
@@ -99,6 +99,26 @@ namespace flags_game.Pages
                 this.dbContext.flags.Add(mf);
             }
 
+            foreach (var ef in existingFlags)
+            {
+                var diskFlag = diskFlags.FirstOrDefault(df => ef.name.Contains(df.name) );
+                if (diskFlag != null)
+                {
+                    if ( diskFlag.url != ef.url)
+                    {
+                        ef.url = diskFlag.url;
+                        this.dbContext.flags.Update(ef);
+                    }
+
+                    if (diskFlag.name != ef.name)
+                    {
+                        ef.name = diskFlag.name;
+                        this.dbContext.flags.Update(ef);
+                    }
+
+                }
+            }
+            this.dbContext.SaveChanges();
 
             foreach (var flag in diskFlags)
             {
@@ -109,6 +129,7 @@ namespace flags_game.Pages
                 } else
                 {
                     flag.population = pop.population;
+                    this.dbContext.flags.Update(flag);
                 }
 
             }

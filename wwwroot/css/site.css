@@ -65,7 +65,7 @@ body {
 
 .flags-grid {
     display: flex;
-    align-content: space-evenly;
+    align-content: start;
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
