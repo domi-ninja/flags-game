@@ -6,11 +6,11 @@
         <img src="@Model.url" alt="@Model.name" />
     </div>
     <div class="flag-detail">
+        <span>@Model.population</span>
         <p><b>@Model.name</b></p>
-
         @foreach (var tag in Model.flagTags)
         {
-            <span>@tag.Tag.name</span>
+            <span class="badge">@tag.Tag.name</span>
         }
     </div>
 </div>

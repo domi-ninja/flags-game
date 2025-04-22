@@ -19,6 +19,27 @@ namespace CoreFlags
             this.dbContext = dbContext;
         }
 
+
+        public ( List<Tag>, List<Flag> ) LoadData(int? tagId)
+        {
+            var tags = dbContext.tags
+                .Include(t => t.flagTags)
+                    .ThenInclude(ft => ft.Flag)
+                .OrderBy(r => r.name)
+                .ToList();
+            var flags = this.dbContext.flags
+                .Include(f => f.flagTags)
+                    .ThenInclude( ft => ft.Tag )
+                .Where( f => 
+                    tagId.HasValue ? f.flagTags.Any(ft => ft.TagId == tagId) : f.population > 1000000
+                 )
+                .OrderBy(r => r.population)
+                .Reverse()
+                .ToList();
+
+            return (tags, flags);
+        }
+
         [HttpGet]
         public IActionResult Edit()
         {
@@ -88,10 +109,9 @@ namespace CoreFlags
 
 
         [HttpGet]
-        public async Task<IActionResult> List()
+        public async Task<IActionResult> List( TagSearchModel  searchModel )
         {
-            List<Flag> flags = this.dbContext.flags.ToList(); // this.SyncFlags();
-            var tags = dbContext.tags.ToList();
+            var (tags, flags) = LoadData(searchModel.tagId);
 
             return ViewComponent("FlagList", new FlagListModel() { Flags = flags, Tags = tags });
         }

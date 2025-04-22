@@ -1,12 +1,24 @@
 ﻿@model FlagListModel
 
-dwdwd
-
-<div class="flags-grid" style="display: flex">
-@foreach (var flag in Model.Flags)
-{
-   <text>
-      @await Component.InvokeAsync(typeof(XFlagViewComponent), flag)
-   </text>
-}
+<div id="flag-list">
+    <ul>
+        <li class="btn btn-secondary" hx-get="/api/Flag/List" hx-vals='{}' hx-target="#flag-list">
+            All
+        </li>
+        @foreach (var tag in Model.Tags)
+        {
+            <li class="btn btn-secondary" hx-get="/api/Flag/List" hx-vals='{"tagId": @tag.Id}' hx-target="#flag-list">@tag.name</li>
+        }
+    </ul>
+    <hr />
+    <section>
+        <div class="flags-grid" style="display: flex">
+            @foreach (var flag in Model.Flags)
+            {
+                <text>
+                    @await Component.InvokeAsync(typeof(XFlagViewComponent), flag)
+                </text>
+            }
+        </div>
+    </section>
 </div>
