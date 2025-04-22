@@ -6,3 +6,4 @@ obj
 .vs/flags-game/DesignTimeBuild
 .vs/flags-game/copilot-chat
 flags.db.bak
+.termdbms
