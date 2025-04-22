@@ -1,0 +1,11 @@
+﻿@page
+@model EditModel
+@{
+    ViewData["Title"] = "Edit";
+}
+<h1>@ViewData["Title"]</h1>
+
+
+<div hx-get="/api/Flag/List" hx-trigger="load">
+
+</div>
