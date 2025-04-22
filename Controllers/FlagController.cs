@@ -34,6 +34,8 @@ namespace CoreFlags
             var flags = this.dbContext.flags
                 .Include(f => f.flagTags)
                     .ThenInclude(ft => ft.Tag)
+                .Include( f=> f.colorTags )
+                    .ThenInclude( ct=> ct.FlagColor )
                 .Where(f =>
                     tagId.HasValue ? (tagId == -1 ? !f.flagTags.Any() : f.flagTags.Any(ft => ft.TagId == tagId)) : f.population > 1000000
                  )
@@ -117,7 +119,7 @@ namespace CoreFlags
         {
             var (tags, flags) = LoadData(searchModel.tagId);
 
-            return ViewComponent("FlagList", new FlagListModel() { Flags = flags, Tags = tags });
+            return ViewComponent(typeof(FlagListViewComponent), new FlagListModel() { Flags = flags, Tags = tags });
         }
 
         [HttpPost]

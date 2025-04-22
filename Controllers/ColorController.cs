@@ -6,12 +6,16 @@ using System.Runtime.InteropServices.Marshalling;
 using System.Text.Json;
 using flags_game;
 using flags_game.Models;
+using flags_game.Pages.Shared.Components.ColorTagList;
 using flags_game.Pages.Shared.Components.ColorUsage;
 using flags_game.Pages.Shared.Components.FlagColormapComponent;
 using flags_game.Pages.Shared.Components.FlagList;
 using flags_game.Pages.Shared.Components.FlagListAnswerable;
+using flags_game.Pages.Shared.Components.TagsList;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static Azure.Core.HttpHeader;
 
 namespace CoreFlags
 {
@@ -24,29 +28,35 @@ namespace CoreFlags
         {
             this.webHostEnvironment = webHostEnvironment;
             this.dbContext = dbContext;
+
+
         }
 
 
-        public (List<Tag>, List<Flag>) LoadData(int? tagId)
+        public void LoadCombos()
         {
-            var tags = dbContext.tags
-                .Include(t => t.flagTags)
-                .OrderBy(r => r.name)
-                .ToList();
-            var flags = this.dbContext.flags
-                .Include(f => f.flagTags)
-                    .ThenInclude(ft => ft.Tag)
-                .Where(f =>
-                    tagId.HasValue ? (tagId == -1 ? !f.flagTags.Any() : f.flagTags.Any(ft => ft.TagId == tagId)) : f.population > 1000000
-                 )
-                .OrderBy(r => r.population)
-                .Reverse()
-                .ToList();
-
-            return (tags, flags);
+            if (combosCache == null) {  
+                this.combos = new List<HashSet<COLOR>>();
+                GetCombosRec(combos, 2, 4, new());
+                combosCache = this.combos;
+            } else
+            {
+                this.combos = combosCache;
+            }
         }
 
+        public (List<FlagColor>, List<Flag>) LoadData()
+        {
+            var flagColor = dbContext.flagColor
+                .ToList();
 
+            var flags = this.dbContext.flags
+                .Include(f => f.colorTags)
+                    .ThenInclude(ft => ft.FlagColor)
+                .ToList();
+
+            return (flagColor, flags);
+        }
 
         public enum COLOR
         {
@@ -56,21 +66,27 @@ namespace CoreFlags
             GREEN,
             BLUE,
             YELLOW,
-            //ORANGE,
+            ORANGE,
+            //VIOLET,
+            LIGHTBLUE,
         }
 
         public static Dictionary<Color, COLOR> hueToColorMap = new()
         {
             {  Color.Red, COLOR.RED },
             {  Color.Green, COLOR.GREEN },
-            {  Color.FromArgb(0, 255, 148), COLOR.GREEN },
+            {  Color.FromArgb(52, 180, 50), COLOR.GREEN },
             {  Color.Blue, COLOR.BLUE },
-            {  Color.FromArgb(0, 148, 255), COLOR.BLUE },
+            {  Color.FromArgb(0, 60, 120), COLOR.BLUE },
+            {  Color.FromArgb(94, 180, 230), COLOR.LIGHTBLUE },
+            {  Color.Turquoise, COLOR.LIGHTBLUE },
             {  Color.FromArgb(255, 175, 0), COLOR.YELLOW },
-            //{  Color.FromArgb(255, 135, 0), COLOR.ORANGE },
-            //{  Color.Turquoise, COLOR.LIGHT_BLUE },
+            {  Color.FromArgb(255, 135, 0), COLOR.ORANGE },
+            //{  Color.Purple, COLOR.VIOLET },
         };
+        private static List<HashSet<COLOR>> combosCache;
 
+        public List<HashSet<COLOR>> combos { get; private set; }
 
         public static Dictionary<Color, long> GetImageColorsSlow(System.Drawing.Bitmap bmp)
         {
@@ -96,36 +112,15 @@ namespace CoreFlags
             return result;
         }
 
+        string ColorToHex(Color color) => "#" + color.R.ToString("X2") + color.G.ToString("X2") + color.B.ToString("X2");
 
-        private (List<Dictionary<Color, Color>>, Dictionary<string, HashSet<COLOR>>) SyncFlagColors(int count)
+        private (List<Dictionary<Color, Color>>, Dictionary<string, HashSet<COLOR>>) SyncFlagColors(int count, int offset)
         {
-            //var flagColors = this.dbContext.flagColor.ToList();
-            //foreach (var color in Enum.GetValues(typeof(COLOR)))
-            //{
-            //    string rgb = ColorToHex(hueToColorMap.FirstOrDefault(kvp => kvp.Value == (COLOR)color).Key);
-            //    string colorName = color.ToString().ToLower();
-            //    if (!flagColors.Any(fc => fc.name == colorName))
-            //    {
-            //        this.dbContext.flagColor.Add(new FlagColor()
-            //        {
-            //            name = colorName,
-            //            rgb = rgb,
-            //        });
-            //    }
-            //}
-            //dbContext.SaveChanges();
-            //flagColors = this.dbContext.flagColor.ToList();
-
             List<Dictionary<Color, Color>> debugResult = new();
             var semanticResult = new Dictionary<string, HashSet<COLOR>>();
 
-            foreach (var flag in this.dbContext.flags)
+            foreach (var flag in this.dbContext.flags.Skip(offset).Take(count))
             {
-                count--;
-                if (count == 0)
-                {
-                    break;
-                }
                 var request = WebRequest.Create("http://localhost:5209/" + flag.url);
                 using (var response = request.GetResponse())
                 using (var stream = response.GetResponseStream())
@@ -141,7 +136,7 @@ namespace CoreFlags
                     {
                     };
                     var colors = GetImageColorsSlow(image);
-                    colors = colors.Where(colors => colors.Value > 100)
+                    colors = colors.Where(colors => colors.Value > 0.02 * image.Size.Width * image.Size.Height )
                         .OrderBy(colors => colors.Value)
                         .ToDictionary(colors => colors.Key, colors => colors.Value);
                     foreach (var (color, amount) in colors)
@@ -175,7 +170,9 @@ namespace CoreFlags
                                 double a = Math.Abs(kvp.Key.GetHue() - hue + 360);
                                 double b = Math.Abs(kvp.Key.GetHue() - hue - 360);
                                 double c = Math.Abs(kvp.Key.GetHue() - hue);
-                                return Math.Min(Math.Min(a, b), c);
+                                var hueDistance = Math.Min(Math.Min(a, b), c);
+                                var lightDist = Math.Abs(kvp.Key.GetBrightness() - brightness) * 360;
+                                return Math.Sqrt( hueDistance * hueDistance + lightDist * lightDist);
                             });
                             clampedColor = colorsByHowClose.First().Key;
                             enum_color = colorsByHowClose.First().Value;
@@ -193,11 +190,6 @@ namespace CoreFlags
                             clampedColors.Add(clampedColor, amount);
                         }
                     }
-
-                    foreach (var cc in clampedColors)
-                    {
-
-                    }
                 }
             }
 
@@ -205,16 +197,58 @@ namespace CoreFlags
         }
 
         [HttpGet]
-        public IActionResult Analyze(int count = 5)
+        public IActionResult Analyze(int count = 5, int offset=0)
         {
-            var (colorResult, _) = SyncFlagColors(count);
+
+            var flagColors = this.dbContext.flagColor.ToList();
+            foreach (var color in Enum.GetValues(typeof(COLOR)))
+            {
+                string rgb = ColorToHex(hueToColorMap.FirstOrDefault(kvp => kvp.Value == (COLOR)color).Key);
+                string colorName = color.ToString().ToLower();
+                if (!flagColors.Any(fc => fc.name == colorName))
+                {
+                    this.dbContext.flagColor.Add(new FlagColor()
+                    {
+                        name = colorName,
+                        rgb = rgb,
+                    });
+                }
+            }
+            dbContext.SaveChanges();
+            flagColors = this.dbContext.flagColor.ToList();
+
+
+            var (colorResult, updateDbResult) = SyncFlagColors(count, offset);
+
+            foreach (var (flagUrl, colors) in updateDbResult)
+            {
+                var flag = this.dbContext.flags.FirstOrDefault(f => f.url == flagUrl);
+
+                // purge existing color tags and recreate
+                foreach (var oldColorTag in this.dbContext.colorTags.Where(ct => ct.FlagId == flag.Id))
+                {
+                    this.dbContext.colorTags.Remove(oldColorTag);
+                }
+
+                foreach (var color in colors)
+                {
+                    string colorName = color.ToString().ToLower();
+                    var flagColor = this.dbContext.flagColor.FirstOrDefault(fc => fc.name == colorName);
+                    this.dbContext.colorTags.Add(new ColorTag()
+                    {
+                        FlagId = flag.Id,
+                        FlagColorId = flagColor.Id,
+                    });
+                }
+                this.dbContext.SaveChanges();
+            }
+
             return ViewComponent(typeof(FlagColormapViewComponent), new FlagColormapModel()
             {
                 colorResult = colorResult,
-                flags = this.dbContext.flags.ToList(),
+                flags = this.dbContext.flags.Skip(offset).Take(count).ToList(),
             });
         }
-
 
         private void GetCombosRec(List<HashSet<COLOR>> combResult, int min, int max, List<COLOR> sofar)
         {
@@ -245,12 +279,51 @@ namespace CoreFlags
             }
         }
 
+
+        public IActionResult RelevantCombos()
+        {
+            var (flagColors, flags) = LoadData();
+            LoadCombos();
+
+            var relevantComboList = new List<FlagComboTag>();
+            foreach (var c in this.combos)
+            {
+                var matchingFlags = flags.Where(f =>
+                {
+                    var flagColors = f.colorTags.Select(ct => ct.FlagColor).Select(fc => fc.name);
+                    if ( flagColors.Count() != c.Count ) return false;
+                    return c.All(color => flagColors.Contains(color.ToString().ToLower()));
+                }).ToList();
+
+                var colors = c.Select(col => new ColorPair()
+                {
+                    color = flagColors.FirstOrDefault(fc => fc.name == col.ToString().ToLower()).rgb,
+                    colorId = flagColors.FirstOrDefault(fc => fc.name == col.ToString().ToLower()).Id,
+                });
+
+                if ( matchingFlags.Count < 3 )
+                {
+                    continue;
+                } 
+
+                relevantComboList.Add(new FlagComboTag()
+                {
+                    colors = colors,
+                    flagsCount = matchingFlags.Count,
+                });
+            }
+
+            return ViewComponent(typeof(ColorTagListViewComponent), new ColorTagListModel()
+            {
+               tags = relevantComboList,
+            });
+        }
+
         [HttpGet]
         public IActionResult Combinations()
         {
             //var colorResult = SyncFlagColors(count);
-            var combos = new List<HashSet<COLOR>>();
-            GetCombosRec(combos, 2, 4, new());
+            LoadCombos();
             var combResult = new List<CombResult>();
             foreach (var combo in combos)
             {
@@ -259,7 +332,7 @@ namespace CoreFlags
                     colors = combo,
                 });
             }
-            var (_, colorResult) = SyncFlagColors(-1);
+            var (_, colorResult) = SyncFlagColors(-1, 0);
             foreach (var flagColorSet in colorResult)
             {
                 var match = combResult.Where(combo =>

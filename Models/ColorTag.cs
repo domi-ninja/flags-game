@@ -8,7 +8,7 @@ namespace flags_game.Models
         public FlagColor FlagColor { get; set; }
         public int Id { get; set; }
         public int FlagId { get; set; }
-        public int TagId { get; set; }
+        public int FlagColorId { get; set; }
         public Flag Flag { get; set; }
     }
 }
