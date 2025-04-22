@@ -16,10 +16,11 @@
                 flag.flagTags = new List<Models.FlagTag>();
                 <text>
                     @await Component.InvokeAsync(typeof(XFlagViewComponent), new XFlagModel()
-           {
-               flag = flag,
-               answerable = false
-           })
+                    {
+                        flag = flag,
+                        answerable = false,
+                       answeringStats = Model?.answeringStats?.GetValueOrDefault(flag.Id) ?? new AnswerStat()
+                    })
                 </text>
             }
         </div>

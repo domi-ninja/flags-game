@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Security.Cryptography;
+using System.Text.Json;
 
 namespace CoreFlags
 {
@@ -13,6 +14,8 @@ namespace CoreFlags
 
         public List<int> flagIds { get; set; }
         public bool minPop { get; set; } = true;
+
+        public string answeringStats { get; set; } 
 
         public override string ToString()
         {

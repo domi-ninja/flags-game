@@ -2,6 +2,13 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+var config = {}
+function configure(configObj)
+{
+    Object.keys(configObj).forEach(function (k) {
+        config[k] = configObj[k];
+    })
+}
 
 function playOnType(event, flagId) {
     var textEntered = event.target.value;
@@ -39,7 +46,13 @@ function playOnType(event, flagId) {
 
         matches = matches.slice(0, 5);
 
+        if (config.hard) {
+            suggestionListEl.classList.add("hidden");
+        } else {
+            suggestionListEl.classList.remove("hidden");
+        }
         suggestionListEl.innerHTML = matches.map(m => `<li>${m}</li>`).join("");
+
     }
 }
 
@@ -101,6 +114,21 @@ function get_fails(){
   })
 
   return JSON.stringify(fails);
+}
+
+function get_answer_stats() {
+    var guesses = {};
+    Object.keys(save.country_guesses).forEach(cid => {
+        var cg = save.country_guesses[cid];
+        var right = cg.reduce((sum, el) => sum + (el.s ? 1 : 0), 0);
+        var wrong = cg.reduce((sum, el) => sum + (el.s ? 0 : 1), 0);
+        guesses[parseInt(cid)] = {
+            right: right,
+            wrong: wrong,
+        };
+    });
+    console.log(guesses)
+    return JSON.stringify( guesses );
 }
 
 var storage_name = "flags_game";
