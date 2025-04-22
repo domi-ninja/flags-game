@@ -1,17 +1,12 @@
 ﻿@model FlagListModel
 
-
+dwdwd
 
 <div class="flags-grid" style="display: flex">
 @foreach (var flag in Model.Flags)
 {
-    <div class="flag">
-        <div class="img-wrapper">
-            <img src="@flag.url" alt="@flag.name" />
-        </div>
-        <div class="flag-detail">
-            <p><b>@flag.name</b></p>
-        </div>
-    </div>
-    }
+   <text>
+      @await Component.InvokeAsync(typeof(XFlagViewComponent), flag)
+   </text>
+}
 </div>

@@ -1,3 +1,4 @@
+
 html {
   font-size: 14px;
 }
@@ -28,20 +29,25 @@ body {
 }
 
 .flag .img-wrapper img{
-    max-width: 120px;
-    max-height: 80px;
-    object-fit: contain;
-    object-position: top;
+    width: 100px;
+    height: 60px;
+    object-fit: cover;
+    object-position: center;
     border: 1px solid black;
 }
 
-.flag .img-wrapper {
-    height: 80px;
-}
+    .flag .img-wrapper {
+        width: 100px;
+        height: 60px;
+    }
 
 
 .flag-detail {
-    max-width: 120px;
+    max-width: 100px;
+}
+
+.flag-detail input[type="submit"]{
+    width:100%;
 }
 
 .flags-grid {
@@ -50,4 +56,31 @@ body {
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
+    min-height: 20px;
+}
+
+li {
+    list-style-type: none;
+}
+
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+section {
+    margin-bottom: 2em;
+}
+
+.max-height-50vh {
+    max-height: 50vh;
+    overflow-y: scroll;
+}
+/*
+.w-50 {
+    width: 50%;
+}*/
+
+.clicky {
+    cursor: pointer;
 }

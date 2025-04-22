@@ -8,16 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pages\Shared\Components\Flag\FlagViewComponent.cs" />
     <Compile Remove="Pages\Shared\Components\TagList\TagListViewComponent.cs" />
     <Compile Remove="Pages\Shared\Components\XxYy\XxYyViewComponent.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Pages\Shared\Components\FlagTagList\FlagTagListViewComponent.cs">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Pages\Shared\Components\XxYy\XxYyViewComponent.cs">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
