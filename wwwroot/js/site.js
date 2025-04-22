@@ -59,6 +59,7 @@ function playOnType(event, flagId) {
 function playOnBlur(event) {
     var suggestionListEl = event.target.parentElement.querySelector(".flag-detail .country-suggestions");
     suggestionListEl.innerHTML = "";
+    suggestionListEl.classList.add("hidden");
 }
 
 function submitAnswer(event, flagId){
@@ -66,8 +67,10 @@ function submitAnswer(event, flagId){
   if (textEntered.length < 1) {
     return;
   }
+
   var flagNameElement = event.target.parentElement.querySelector(".flag-name");
   var lastSuggestionEl = event.target.parentElement.querySelector(".flag-detail li");
+  var userInputEl = event.target.parentElement.querySelector(".flag-detail .user-input");
   var countrySuggestionsEl = event.target.parentElement.querySelector(".country-suggestions"); 
   var solution = flagNameElement.innerText;
   var correct = false;
@@ -82,6 +85,7 @@ function submitAnswer(event, flagId){
   } else {
     flagNameElement.classList.remove('hidden');
     flagNameElement.classList.add("red");
+    userInputEl.innerText = lastSuggestionEl.innerText;
   }
 
   event.target.classList.add("hidden");

@@ -18,8 +18,8 @@
             }
         </div>
         <div class="flag-detail">
- 
-
+            <span class="user-input"></span>
+            
             @if ( Model.flag.population != 0)
             {
                 <span>@(MathF.Floor(Model.flag.population / 10000f) / 100f) M</span>
@@ -51,7 +51,7 @@
                        hx-on:keyup="playOnType(event, @Model.flag.Id)"
                        hx-on:blur="playOnBlur(event)"
                        autocomplete="off">
-                <div class="country-suggestions country-suggestions-@Model.flag.Id">
+                <div class="country-suggestions hidden country-suggestions-@Model.flag.Id">
                 </div>
             }
 
