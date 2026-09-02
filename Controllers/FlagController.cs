@@ -83,7 +83,7 @@ namespace CoreFlags
             dbContext.SaveChanges();
 
             var tags = dbContext.tags.ToList();
-            return Redirect("/Edit"); // ViewComponent(typeof(FlagTagListViewComponent), new FlagTagListModel() { Tags = tags });
+            return Redirect(Url.Page("/Edit") ?? $"{Request.PathBase}/Edit"); // ViewComponent(typeof(FlagTagListViewComponent), new FlagTagListModel() { Tags = tags });
         }
 
 

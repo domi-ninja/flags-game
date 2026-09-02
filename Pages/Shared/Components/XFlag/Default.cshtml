@@ -8,13 +8,13 @@
         <div class="img-wrapper">
             @if (!Model.answerable)
             {
-                <a href="/flags/big/@(Model.flag.url.Replace("/flags/", ""))?v=3">
-                    <img src="/flags/small/@(Model.flag.url.Replace("/flags/", ""))?v=3" />
+                <a href="@Url.Content($"~/flags/big/{Model.flag.url.Replace("/flags/", "")}")?v=3">
+                    <img src="@Url.Content($"~/flags/small/{Model.flag.url.Replace("/flags/", "")}")?v=3" />
                 </a>
             }
             else
             {
-                <img src="/flags/small/@(Model.flag.url.Replace("/flags/", ""))?v=3" />
+                <img src="@Url.Content($"~/flags/small/{Model.flag.url.Replace("/flags/", "")}")?v=3" />
             }
         </div>
         <div class="flag-detail">

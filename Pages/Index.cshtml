@@ -13,25 +13,25 @@
 @*         hx-trigger="load, click"
  *@        
         <li><h2>flags-game</h2</li>
-        <li class="btn btn-hard btn-light" hx-on:click="configure({hard: true})" hx-vals="js:{ TagColorCss: 'btn-hard', TagParamsStr: 'mode: 2, random: true, minPop: false'}" hx-get="/api/Flag/TagButtons" hx-target="#tag-buttons">
+        <li class="btn btn-hard btn-light" hx-on:click="configure({hard: true})" hx-vals="js:{ TagColorCss: 'btn-hard', TagParamsStr: 'mode: 2, random: true, minPop: false'}" hx-get="@Url.Content("~/api/Flag/TagButtons")" hx-target="#tag-buttons">
             Hard
         </li>
-        <li class="btn btn-medium btn-light" hx-on:click="configure({hard: false})" hx-vals="js:{ TagColorCss: 'btn-medium', TagParamsStr: 'mode: 1, random: true' }" hx-get="/api/Flag/TagButtons" hx-target="#tag-buttons">
+        <li class="btn btn-medium btn-light" hx-on:click="configure({hard: false})" hx-vals="js:{ TagColorCss: 'btn-medium', TagParamsStr: 'mode: 1, random: true' }" hx-get="@Url.Content("~/api/Flag/TagButtons")" hx-target="#tag-buttons">
             Normal
         </li>
-        <li class="btn btn-easy btn-light" hx-on:click="configure({hard: false})" hx-vals="js:{ TagColorCss: 'btn-easy', TagParamsStr: 'mode: 0' }" hx-get="/api/Flag/TagButtons" hx-target="#tag-buttons">
+        <li class="btn btn-easy btn-light" hx-on:click="configure({hard: false})" hx-vals="js:{ TagColorCss: 'btn-easy', TagParamsStr: 'mode: 0' }" hx-get="@Url.Content("~/api/Flag/TagButtons")" hx-target="#tag-buttons">
             Easy
         </li>
 
-        <li class="btn btn-warning" hx-vals="js:{ TagColorCss: 'btn-warning', TagParamsStr: 'mode: 5, random: true, minPop: false, fails: ' + get_fails() }" hx-get="/api/Flag/TagButtons" hx-target="#tag-buttons">
+        <li class="btn btn-warning" hx-vals="js:{ TagColorCss: 'btn-warning', TagParamsStr: 'mode: 5, random: true, minPop: false, fails: ' + get_fails() }" hx-get="@Url.Content("~/api/Flag/TagButtons")" hx-target="#tag-buttons">
             Wrong last time
         </li>
         
-        <li class="btn btn-orange" hx-ext="json-enc" hx-vals="js:{ TagColorCss: 'btn-orange', TagParamsStr: 'mode:6, showStats: true, answeringStats: ' + get_answer_stats() }" hx-get="/api/Flag/TagButtons" hx-target="#tag-buttons">
+        <li class="btn btn-orange" hx-ext="json-enc" hx-vals="js:{ TagColorCss: 'btn-orange', TagParamsStr: 'mode:6, showStats: true, answeringStats: ' + get_answer_stats() }" hx-get="@Url.Content("~/api/Flag/TagButtons")" hx-target="#tag-buttons">
             Wrong most overall
         </li>
 
-        <li class="btn btn-secondary" hx-vals="js:{ TagColorCss: 'btn-secondary', TagParamsStr: 'answers: true, mode:10' }" hx-get="/api/Flag/TagButtons" hx-target="#tag-buttons">
+        <li class="btn btn-secondary" hx-vals="js:{ TagColorCss: 'btn-secondary', TagParamsStr: 'answers: true, mode:10' }" hx-get="@Url.Content("~/api/Flag/TagButtons")" hx-target="#tag-buttons">
             Solutions
         </li>
 
@@ -43,4 +43,3 @@
 <div id="flags-grid" class="flags-grid">
 
 </div>
-

@@ -5,7 +5,7 @@
 
     @foreach (var tag in Model.tags)
     {
-    <li class="btn @Model.TagColorCss" hx-post="/api/Flag/ListQuestion" hx-vals="js:{ flagIds: [ @(string.Join(",", tag.flags.Select(f => f.Id))) ], @Model.TagParamsStr, minPop: false }" hx-target="#flags-grid">
+    <li class="btn @Model.TagColorCss" hx-post="@Url.Content("~/api/Flag/ListQuestion")" hx-vals="js:{ flagIds: [ @(string.Join(",", tag.flags.Select(f => f.Id))) ], @Model.TagParamsStr, minPop: false }" hx-target="#flags-grid">
             
         @foreach (var color in tag.colors )
         {

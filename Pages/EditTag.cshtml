@@ -11,7 +11,7 @@
 
 
 @*
-<div hx-post="/api/Flag/Tag" hx-trigger="">
+<div hx-post="@Url.Content("~/api/Flag/Tag")" hx-trigger="">
 
 </div>
 
@@ -23,9 +23,9 @@ asp-controller="Flag" asp-action="Tag"
         <section>
             <h2> Editing Tag </h2>
             <input hx-vals='{"Id": @Model.Tag.Id}' name="name" type="text" value="@Model.Tag.name" class="tag"
-                   hx-put="/api/Flag/Tag" hx-trigger="keyup changed delay:0.5s" hx-swap="None" />
+                   hx-put="@Url.Content("~/api/Flag/Tag")" hx-trigger="keyup changed delay:0.5s" hx-swap="None" />
 
-            <a class="btn btn-primary" href="/Edit"> Back</a>
+            <a class="btn btn-primary" href="@Url.Page("/Edit")"> Back</a>
 
             @* hx-include="#antiforgery"*@
 
@@ -38,7 +38,7 @@ asp-controller="Flag" asp-action="Tag"
 
                         <div class="flag">
                             <div class="img-wrapper">
-                                <img src="flags/small/@flagTag.Flag.url.Replace("/flags", "")" alt="@flagTag.Flag.name" />
+                                <img src="@Url.Content($"~/flags/small/{flagTag.Flag.url.Replace("/flags/", "")}")" alt="@flagTag.Flag.name" />
                             </div>
                             <div class="flag-detail">
                                 <form asp-page-handler="RemoveFlagTag" method="post" enctype="multipart/form-data">
@@ -69,7 +69,7 @@ asp-controller="Flag" asp-action="Tag"
                         }
                         <div class="flag @conditionalClasses" >
                             <div class="img-wrapper">
-                                <img src="flags/small/@flag.url.Replace("/flags", "")" alt="@flag.name" />
+                                <img src="@Url.Content($"~/flags/small/{flag.url.Replace("/flags/", "")}")" alt="@flag.name" />
                             </div>
                             <div class="flag-detail">
                                 <form asp-page-handler="AddFlagTag" method="post" enctype="multipart/form-data">
@@ -92,4 +92,3 @@ asp-controller="Flag" asp-action="Tag"
     </div>
 
 </section>
-

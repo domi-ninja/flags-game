@@ -1,14 +1,14 @@
 ﻿@model FlagTagListModel
 
-<label><input hx-ext="json-enc" type="text" name="name" hx-post="/api/flag/tag" hx-trigger="keyup[keyCode==13]" hx-target="#flags" /></label>
+<label><input hx-ext="json-enc" type="text" name="name" hx-post="@Url.Content("~/api/flag/tag")" hx-trigger="keyup[keyCode==13]" hx-target="#flags" /></label>
 
 <div id="tags">
     <ul>
         @foreach (var tag in Model.Tags)
         {
             <li>
-                <input hx-ext="json-enc" type="text" value="@tag.name" class="tag" hx-put="/api/flag/tag" hx-trigger="keyup changed delay:0.5s" />
-                <button class="" hx-delete="/api/flag/tag" hx-target="#tags" hx-vals='{"tagId": @tag.Id}'>X</button>
+                <input hx-ext="json-enc" type="text" value="@tag.name" class="tag" hx-put="@Url.Content("~/api/flag/tag")" hx-trigger="keyup changed delay:0.5s" />
+                <button class="" hx-delete="@Url.Content("~/api/flag/tag")" hx-target="#tags" hx-vals='{"tagId": @tag.Id}'>X</button>
             </li>
         }
     </ul>

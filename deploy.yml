@@ -1,0 +1,41 @@
+version: 1
+
+project:
+  name: flags-game
+  environment: prod
+
+build:
+  context: .
+  dockerfile: Dockerfile
+  tags:
+    - "localhost/flags-game:${git_sha}"
+
+hosts:
+  p3:
+    ssh: deploy@p3.domi.ninja
+    roles: [web]
+
+services:
+  web:
+    image: "localhost/flags-game:${git_sha}"
+    hosts: [p3]
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__Flags: Data Source=/data/flags.db
+    ports:
+      - host_ip: 127.0.0.1
+        published: auto
+        target: 8080
+    volumes:
+      - source: /data/pp/flags-game
+        target: /data
+        type: bind
+    health:
+      command: ["curl", "--fail", "--silent", "http://127.0.0.1:8080/"]
+      timeout_seconds: 90
+
+route_files:
+  - source: deploy/flags-game.caddy.tmpl
+    host: p3
+    dest_name: flags-game.caddy

@@ -1,0 +1,14 @@
+flag.p3.domi.ninja {
+    reverse_proxy http://127.0.0.1:${service.web.port.8080}
+}
+
+games.domi.ninja {
+    @flags_without_slash path /flags
+    redir @flags_without_slash /flags/ 308
+
+    handle_path /flags/* {
+        reverse_proxy http://127.0.0.1:${service.web.port.8080} {
+            header_up X-Forwarded-Prefix /flags
+        }
+    }
+}

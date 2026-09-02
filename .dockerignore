@@ -1,0 +1,10 @@
+.deploy
+.git
+.idea
+.vs
+.vscode
+backups
+bin
+obj
+*.bak
+*.user
