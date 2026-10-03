@@ -8,7 +8,7 @@ build:
   context: .
   dockerfile: Dockerfile
   tags:
-    - "localhost/flags-game:${git_sha}"
+    - "localhost/flags-game:${release}"
 
 hosts:
   p3:
@@ -17,7 +17,7 @@ hosts:
 
 services:
   web:
-    image: "localhost/flags-game:${git_sha}"
+    image: "localhost/flags-game:${release}"
     hosts: [p3]
     environment:
       ASPNETCORE_ENVIRONMENT: Production
@@ -39,3 +39,12 @@ route_files:
   - source: deploy/flags-game.caddy.tmpl
     host: p3
     dest_name: flags-game.caddy
+
+checks:
+  smoke:
+    - name: public game
+      url: https://flags.p3.domi.ninja/
+      expect_status: 200
+    - name: games subpath
+      url: https://games.domi.ninja/flags/
+      expect_status: 200
